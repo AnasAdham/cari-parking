@@ -1,3 +1,19 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.parking-spot {
+	@apply container mx-auto m-1 h-full w-5/6 bg-red-100;
+}
+
+td{
+	@apply text-center p-3 border-b border-gray-400;
+}
+
+th{
+	@apply bg-gray-400 p-2;
+}
+
+.table-row-border{
+	@apply  border-l-2 border-r-2 ;
+}

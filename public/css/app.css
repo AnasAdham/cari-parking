@@ -32137,6 +32137,69 @@ select {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.parking-spot {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .parking-spot {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .parking-spot {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .parking-spot {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .parking-spot {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .parking-spot {
+    max-width: 1536px;
+  }
+}
+
+.parking-spot {
+  margin: 0.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+  width: 83.333333%;
+  --tw-bg-opacity: 1;
+  background-color: rgba(254, 226, 226, var(--tw-bg-opacity));
+}
+
+td{
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgba(156, 163, 175, var(--tw-border-opacity));
+  padding: 0.75rem;
+  text-align: center;
+}
+
+th{
+  --tw-bg-opacity: 1;
+  background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
+  padding: 0.5rem;
+}
+
+.table-row-border{
+  border-right-width: 2px;
+  border-left-width: 2px;
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;
