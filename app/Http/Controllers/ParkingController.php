@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Parking;
+use App\Http\Resources\ParkingResource as ParkingResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class ParkingController extends Controller
 {
     /**
@@ -11,9 +13,31 @@ class ParkingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $parkings = Parkings;
+        return ParkingResource::collection($parkings);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // TODO: Study video pasal laravel api menggunakan postman
+        $parkings = $request->isMethod('put') ?  Parking::findorFail($request->parking_id) : new Parking;
+        $parkings->id = $request->input('parking_id');
+        $parkings->parking_name = $request->input('parking_name');
+        $parkings->parking_status = $request->input('parking_status');
+        $parkings->parking_user = $request->input('parking_user');
+
+        if($parkings->save()){
+            return new ParkingResource($parkings);
+        }
+    return null;
     }
 
     /**
@@ -26,16 +50,6 @@ class ParkingController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
