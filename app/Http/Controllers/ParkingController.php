@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Parking;
 use App\Http\Resources\ParkingResource as ParkingResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
 class ParkingController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class ParkingController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $parkings = Parkings;
+        $parkings = Parking::all();
         return ParkingResource::collection($parkings);
     }
 
@@ -28,16 +30,29 @@ class ParkingController extends Controller
     public function store(Request $request)
     {
         // TODO: Study video pasal laravel api menggunakan postman
-        $parkings = $request->isMethod('put') ?  Parking::findorFail($request->parking_id) : new Parking;
-        $parkings->id = $request->input('parking_id');
-        $parkings->parking_name = $request->input('parking_name');
-        $parkings->parking_status = $request->input('parking_status');
-        $parkings->parking_user = $request->input('parking_user');
+        // TODO: Fix the code use FirstOrCreate instead
 
-        if($parkings->save()){
-            return new ParkingResource($parkings);
+
+        try {
+            $parkings = Parking::findorFail($request->parking_id);
+            $parkings->parking_name = $request->input('parking_name');
+            $parkings->parking_status = $request->input('parking_status');
+            $parkings->parking_user = $request->input('parking_user');
+
+            if ($parkings->save()) {
+                return new ParkingResource($parkings);
+            }
+        } catch (ModelNotFoundException $e) {
+            $parkings = new Parking;
+            $parkings->id = $request->input('parking_id');
+            $parkings->parking_name = $request->input('parking_name');
+            $parkings->parking_status = $request->input('parking_status');
+            $parkings->parking_user = $request->input('parking_user');
+
+            if ($parkings->save()) {
+                return new ParkingResource($parkings);
+            }
         }
-    return null;
     }
 
     /**
@@ -47,7 +62,6 @@ class ParkingController extends Controller
      */
     public function create()
     {
-        //
     }
 
 

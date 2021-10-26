@@ -36,6 +36,11 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import Button from "@/Components/Button.vue";
+import { Inertia } from "@inertiajs/inertia";
+
+Inertia.visit(url, {
+  only: ["parkings"],
+});
 
 export default {
   components: {
@@ -43,8 +48,10 @@ export default {
     Button,
     Head,
   },
+  props: ["parkings", "success-message"],
 };
 </script>
+
 <style scoped>
 #parking-lot {
   height: 560px;
