@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Parking;
 use App\Http\Resources\ParkingResource as ParkingResource;
+use App\Providers\NewParkingInfo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Inertia\Inertia;
 
 class ParkingController extends Controller
 {
@@ -15,7 +17,16 @@ class ParkingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): AnonymousResourceCollection
+
+    public function index()
+    {
+        // Returns the parking view page with all the parking details
+        $parkings = Parking::all();
+        return Inertia::render('Dashboard', [
+            'parkings' => $parkings
+        ]);
+    }
+    public function getParkingInfoApi(): AnonymousResourceCollection
     {
         $parkings = Parking::all();
         return ParkingResource::collection($parkings);
@@ -53,6 +64,9 @@ class ParkingController extends Controller
                 return new ParkingResource($parkings);
             }
         }
+        $message = "New parking";
+        // Broadcast to NewParkingInfo channel
+        broadcast(new NewParkingInfo($message));
     }
 
     /**

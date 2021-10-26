@@ -20,5 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('parkings', [ParkingController::class, 'store']);
-Route::get('parkings', [ParkingController::class, 'index']);
-
+Route::get('parkings', [ParkingController::class, 'getParkingInfoApi']);

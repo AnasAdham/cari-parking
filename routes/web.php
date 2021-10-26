@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ParkingController;
+use App\Models\Parking;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,8 +30,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-Route::get('/parking', function () {
-    return view('welcome');
-});
+Route::get('/parking', [ParkingController::class, 'index']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
