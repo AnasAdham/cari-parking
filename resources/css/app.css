@@ -20,3 +20,7 @@ th{
 .table-row-border{
 	@apply  border-l-2 border-r-2 ;
 }
+
+.card {
+    @apply max-w-md bg-white shadow-lg rounded-lg my-10 p-3 mx-5;
+}

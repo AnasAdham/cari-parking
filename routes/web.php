@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ParkingController;
+use App\Http\Controllers\UserController;
 use App\Models\Parking;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +26,13 @@ Route::get('/', function () {
     ]);
 });
 
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('user/homepage', [UserController::class, 'index']);
+
 
 
 Route::get('/parking', [ParkingController::class, 'index']);
