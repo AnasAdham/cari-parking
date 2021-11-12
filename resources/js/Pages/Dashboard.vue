@@ -12,15 +12,6 @@
       <div class="col-span-3">
         <div class="h-full grid grid-cols-4 container mx-auto bg-gray-300 p-9 gap-y-9">
           <div v-for="parking in parkings" :key="parking.id" :class="parking.parking_status"></div>
-          <!-- <div class="available"></div>
-          <div class="occupied"></div>
-          <div class="occupied"></div>
-          <div class="available"></div>
-          <div class="occupied"></div>
-          <div class="available"></div>
-          <div class="occupied"></div>
-          <div class="available"></div>
-          <div class="occupied"></div>-->
         </div>
         <Button v-on:click="getParkingInfo">Click me</Button>
       </div>
