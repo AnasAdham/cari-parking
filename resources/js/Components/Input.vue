@@ -21,8 +21,4 @@ export default {
 };
 </script>
 <style scoped>
-input {
-  width: 500px;
-  margin: 5px;
-}
 </style>

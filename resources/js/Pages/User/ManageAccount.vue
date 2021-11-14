@@ -2,34 +2,34 @@
   <Head title="User Homepage" />
 
   <BreezeAuthenticatedLayout>
-    <template #header>
+    <!-- <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">User Gapo eh sini</h2>
-    </template>
+    </template>-->
     <form action method="post">
       <div class="hero w-screen h-screen mx-auto grid justify-items-center pt-10">
         <div>
-          <div class="form-title">
+          <div class="form-title text-center">
             <h1 class="text-5xl">Manage user</h1>
           </div>
           <div class="form-box">
-            <Label :value="username">Username</Label>
-            <Input :value="username"></Input>
+            <Label :value="username" class="text-xl">Username</Label>
+            <Input :value="username" class="form-input"></Input>
           </div>
           <div class="form-box">
-            <Label :value="password">Password</Label>
-            <Input :value="password"></Input>
+            <Label :value="password" class="text-xl">Password</Label>
+            <Input :value="password" class="form-input"></Input>
           </div>
           <div class="form-box">
-            <Label :value="email">Email</Label>
-            <Input :value="email"></Input>
+            <Label :value="email" class="text-xl">Email</Label>
+            <Input :value="email" class="form-input"></Input>
           </div>
           <div class="form-box">
-            <Label :value="phone">Phone</Label>
-            <Input :value="phone"></Input>
+            <Label :value="phone" class="text-xl">Phone</Label>
+            <Input :value="phone" class="form-input"></Input>
           </div>
           <div class="form-box">
-            <Label :value="license_plate_num">License plate</Label>
-            <Input :value="license_plate_num"></Input>
+            <Label :value="license_plate_num" class="text-xl">License plate</Label>
+            <Input :value="license_plate_num" class="form-input"></Input>
           </div>
           <ButtonSubmit></ButtonSubmit>
         </div>
@@ -57,9 +57,6 @@ export default {
 </script>
 
 <style>
-#parking-lot {
-  height: 560px;
-}
 .hero {
   background-color: #ffeedb;
 }
@@ -68,5 +65,9 @@ export default {
 }
 .form-box {
   margin: 30px;
+}
+.form-input {
+  margin: 5px;
+  width: 400px;
 }
 </style>

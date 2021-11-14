@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ParkingController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
 use App\Models\Parking;
 use Illuminate\Foundation\Application;
@@ -32,6 +33,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('user/homepage', [UserController::class, 'index']);
+Route::get('reservation/homepage', [ReservationController::class, 'index']);
 
 
 
