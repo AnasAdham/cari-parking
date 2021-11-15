@@ -5,15 +5,17 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">Reserve your parking spot</h2>
     </template>
-  
-    <div class="bg-yellow-100 grid grid-rows-1 px-3 py-5 gap-3">
-      <div class="flex float-left">
-        <Button class="m-1">Input 1</Button>
-        <Button class="m-1">Input 2</Button>
+
+    <div class="content bg-yellow-100 p-2 space-y-3">
+      <div class="container flex justify-start">
+        <Button class="m-1">Make a reservation</Button>
+        <Button class="m-1">View reservation</Button>
       </div>
-      <div class="container h-full">
+      <div class="container h-full flex justify-center">
+      <div class="">
         <Input type="date"></Input>
         <Button class="ml-3">Reserve</Button>
+      </div>
       </div>
     </div>
 
@@ -39,5 +41,8 @@ export default {
 };
 </script>
 
-<style lang="">
+<style scoped>
+.content {
+  height: 80vh;
+}
 </style>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
@@ -34,6 +35,7 @@ Route::get('/dashboard', function () {
 
 Route::get('user/homepage', [UserController::class, 'index']);
 Route::get('reservation/homepage', [ReservationController::class, 'index']);
+Route::get('dashboard/homepage', [DashboardController::class, 'index']);
 
 
 

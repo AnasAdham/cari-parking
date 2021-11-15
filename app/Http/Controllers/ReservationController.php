@@ -10,6 +10,6 @@ class ReservationController extends Controller
     //
     public function index()
     {
-        return Inertia::render('Reservation/ReservationHomepage');
+        return Inertia::render('Reservation/ViewReservation');
     }
 }
