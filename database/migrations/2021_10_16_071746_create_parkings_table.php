@@ -16,7 +16,7 @@ class CreateParkingsTable extends Migration
         Schema::create('parkings', function (Blueprint $table) {
             $table->id();
             $table->string('parking_name');
-            $table->enum('parking_status', ['available', 'occupied']);
+            $table->enum('parking_status', ['available', 'occupied', 'wrong_parking']);
             $table->foreignId('parking_user');
             $table->timestamps();
         });
