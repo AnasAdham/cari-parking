@@ -11,15 +11,45 @@ class ReservationController extends Controller
     //
     public function index()
     {
-        return Inertia::render('Reservation/ViewReservation');
+        return Inertia::render('Reservation/ReservationHomepage');
     }
 
-    public function showAvailableParking(Request $request)
+
+    // Create a reservation to a specific parking adding to the reservation table
+    public function makeReservation(Request $request)
+    {
+        $request->validate([
+            'date_and_time' => 'required',
+            'user_id' => 'required',
+            'parking_id' => 'required',
+        ]);
+        Reservation::create([
+            'date' => $request->date_and_time,
+            'user_id' => $request->user_id,
+            'parking_id' => $request->parking_id
+        ]);
+        return redirect()->route('reservation.homepage');
+    }
+
+    // TODO this function is a temporary function to set the parking to reserved on the specific date
+    // This method of setting the parking status will be replaced with a schedule
+    public function setParkingAsReserved()
+    {
+        // When Clicked get current time and compare to
+        // The set time in the parking reservation page
+    }
+
+    // Display all available parking on the specific time to
+    public function showAvailableParkingToReserve(Request $request)
     {
         $validated = $request->validate([
             'date' => 'required',
+            'time' => 'required'
         ]);
-        $reservations = Reservation::where('date', $request->date);
+
+        $reservations = Reservation::all();
+
+
         return Inertia::render('Reservation/AvailableReservation', [
             'reservations' => $reservations
         ]);

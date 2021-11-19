@@ -13,7 +13,7 @@
       </div>
       <div class="container h-full flex justify-center">
       <div class="">
-        <Input type="date"></Input>
+        <Input type="datetime-local"></Input>
         <Button class="ml-3">Reserve</Button>
       </div>
       </div>

@@ -9,6 +9,7 @@ use App\Providers\NewParkingInfo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
+use Carbon\Carbon;
 
 class ParkingController extends Controller
 {
@@ -33,6 +34,7 @@ class ParkingController extends Controller
             'parkings' => $parkings
         ]);
     }
+
     public function getParkingInfoApi(): AnonymousResourceCollection
     {
         $parkings = Parking::all();
