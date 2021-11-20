@@ -2,16 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReservationResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use App\Models\Parking;
+use App\Models\Reservation;
+use Carbon\Carbon;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReservationController extends Controller
 {
-    //
     public function index()
     {
         return Inertia::render('Reservation/ReservationHomepage');
+    }
+
+    // TODO rename to chooseParkingToReserve
+    // Function to display all available reservation that are still available to
+    // be reserved
+    public function showAllAvailableParkingToReserve()
+    {
+        $parkings = Parking::all();
+        // Retrieve date from interface
+        $date = '2020-11-11 03:50:20';
+        $reservations = Reservation::whereDate('reservation_date', $date);
+        // dd($reservations[0]->parking);
+        foreach ($parkings as $parking) {
+            $counter = 0;
+            foreach ($reservations as $reservation) {
+                if ($parking->id == $reservation->parking->id) {
+                    // The parking is reserved
+                    unset($parkings[$counter]);
+                    break;
+                }
+            }
+            $counter++;
+        }
+        return Inertia::render('Reservation/ChooseParkingToReserve', [
+            'parkings' => $parkings
+        ]);
     }
 
 
@@ -33,28 +63,27 @@ class ReservationController extends Controller
 
     // TODO this function is a temporary function to set the parking to reserved on the specific date
     // This method of setting the parking status will be replaced with a schedule
-    public function setParkingAsReserved()
+    public function setReserveParkingStatus()
     {
         // When Clicked get current time and compare to
+        $now = Carbon::now();
+        $reservations =
+            Reservation::whereDate('reservation_date', '=', $now->toDateTimeString())
+            ->whereTime('reservation_date', $now->toTimeString())
+            ->get();
         // The set time in the parking reservation page
+        // dd($reservations->isEmpty());
+        if (!$reservations->isEmpty()) {
+            foreach ($reservations as $reservation) {
+                $parking = Parking::find($reservation->parking->id);
+                $parking->parking_status = "reserved";
+                $parking->save();
+            }
+        }
     }
 
-    // Display all available parking on the specific time to
-    public function showAvailableParkingToReserve(Request $request)
-    {
-        $validated = $request->validate([
-            'date' => 'required',
-            'time' => 'required'
-        ]);
 
-        $reservations = Reservation::all();
-
-
-        return Inertia::render('Reservation/AvailableReservation', [
-            'reservations' => $reservations
-        ]);
-    }
-
+    // Function for showing reservation specific to the user
     public function showUserReservation()
     {
         // TODO be sure to authorized
@@ -64,6 +93,8 @@ class ReservationController extends Controller
             'reservations' => $reservations
         ]);
     }
+
+    // Function for canceling reservation
     public function cancelReservation(Reservation $reservation)
     {
         if (Auth::check()) {
@@ -76,5 +107,26 @@ class ReservationController extends Controller
             }
         }
         return Redirect::route('user.reservation')->with('errorMessage', 'Cancelation fail');
+    }
+
+    // API for development use
+    public function storeReservationApi(Request $request)
+    {
+        $reservations = Reservation::firstOrCreate([
+            'id' => $request->reservation_id,
+            'reservation_user' => $request->user,
+            'reservation_parking' => $request->parking_id,
+            'reservation_date' => $request->date,
+        ]);
+        if ($reservations->save()) {
+            return new ReservationResource($reservations);
+        }
+    }
+
+    // API for development use
+    public function getReservationInfoApi(): AnonymousResourceCollection
+    {
+        $reservations = Reservation::all();
+        return ReservationResource::collection($reservations);
     }
 }

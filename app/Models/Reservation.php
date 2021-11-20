@@ -9,12 +9,13 @@ class Reservation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'date',
-        'parking_id'
+        'reservation_user',
+        'reservation_parking',
+        'reservation_date'
     ];
 
     public function parking()
     {
-        return $this->hasOne(Parking::class)->withDefault();
+        return $this->hasOne(Parking::class, 'id', 'reservation_parking');
     }
 }
