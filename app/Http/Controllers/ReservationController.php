@@ -76,8 +76,13 @@ class ReservationController extends Controller
         if (!$reservations->isEmpty()) {
             foreach ($reservations as $reservation) {
                 $parking = Parking::find($reservation->parking->id);
+                if($parking->parking_status = "available"){
                 $parking->parking_status = "reserved";
                 $parking->save();
+                }else{
+                    // TODO
+                    // send error to user
+                }
             }
         }
     }
