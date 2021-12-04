@@ -18,17 +18,34 @@ class ReservationController extends Controller
         return Inertia::render('Reservation/ReservationHomepage');
     }
 
-    // TODO rename to chooseParkingToReserve
-    // Function to display all available reservation that are still available to
-    // be reserved
-    public function showAllAvailableParkingToReserve()
+    public function showAllAvailableParkingToReserve(Request $request)
     {
+        $request->validate([
+            'reservation_date' => 'required',
+            'reservation_start' => 'required',
+            'reservation_end' => 'required',
+        ]);
+
         $parkings = Parking::all();
         // Retrieve date from interface
-        $date = '2020-11-11 03:50:20';
-        $reservations = Reservation::whereDate('reservation_date', $date);
-        // dd($reservations[0]->parking);
+        $date = Carbon::parse($request->reservation_date, 'Asia/Kuala_Lumpur')
+            ->setTimezone('UTC')
+            ->toDateString();
+        $start = Carbon::parse($request->reservation_start, 'Asia/Kuala_Lumpur')
+            ->setTimezone('UTC')
+            ->toTimeString();
+        $end = Carbon::parse($request->reservation_end, 'Asia/Kuala_Lumpur')
+            ->setTimezone('UTC')
+            ->toTimeString();
+
+        $reservations = Reservation::whereDate('reservation_date', $date)
+            ->whereTime('reservation_start', '>=', $start)
+            ->orwhereTime('reservation_end', '<=', $end)
+            ->get();
+        // dd($start);
+        // dd($reservations);
         foreach ($parkings as $parking) {
+            $parking->parking_status = 'available';
             $counter = 0;
             foreach ($reservations as $reservation) {
                 if ($parking->id == $reservation->parking->id) {
@@ -39,8 +56,14 @@ class ReservationController extends Controller
             }
             $counter++;
         }
+
         return Inertia::render('Reservation/ChooseParkingToReserve', [
-            'parkings' => $parkings
+            'parkings' => $parkings,
+            'reservation_data' => array(
+                "date" => $date,
+                "start" => $start,
+                "end" => $end
+            )
         ]);
     }
 
@@ -49,15 +72,19 @@ class ReservationController extends Controller
     public function makeReservation(Request $request)
     {
         $request->validate([
-            'date_and_time' => 'required',
-            'user_id' => 'required',
-            'parking_id' => 'required',
+            'user' => 'required',
+            'parking' => 'required',
+            'reservation' => 'required'
         ]);
+
         Reservation::create([
-            'date' => $request->date_and_time,
-            'user_id' => $request->user_id,
-            'parking_id' => $request->parking_id
+            'reservation_user' => $request->user,
+            'reservation_parking' => $request->parking,
+            'reservation_date' => $request->reservation["date"],
+            'reservation_start' => $request->reservation["start"],
+            'reservation_end' => $request->reservation["end"],
         ]);
+
         return redirect()->route('reservation.homepage');
     }
 
@@ -76,10 +103,10 @@ class ReservationController extends Controller
         if (!$reservations->isEmpty()) {
             foreach ($reservations as $reservation) {
                 $parking = Parking::find($reservation->parking->id);
-                if($parking->parking_status = "available"){
-                $parking->parking_status = "reserved";
-                $parking->save();
-                }else{
+                if ($parking->parking_status = "available") {
+                    $parking->parking_status = "reserved";
+                    $parking->save();
+                } else {
                     // TODO
                     // send error to user
                 }
@@ -122,6 +149,8 @@ class ReservationController extends Controller
             'reservation_user' => $request->user,
             'reservation_parking' => $request->parking_id,
             'reservation_date' => $request->date,
+            'reservation_start' => $request->start,
+            'reservation_end' => $request->end,
         ]);
         if ($reservations->save()) {
             return new ReservationResource($reservations);

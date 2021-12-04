@@ -11,7 +11,9 @@ class Reservation extends Model
     protected $fillable = [
         'reservation_user',
         'reservation_parking',
-        'reservation_date'
+        'reservation_date',
+        'reservation_start',
+        'reservation_end'
     ];
 
     public function parking()

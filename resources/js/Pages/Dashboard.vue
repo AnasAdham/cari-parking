@@ -55,6 +55,7 @@ export default {
       // Listen to channel NewParkingInfo for new parking information
       Echo.channel("new-parking-info").listen("NewParkingInfo", () => {
         // Then call getParkingInfo
+        console.log("New parking available");
         getParkingInfo();
       });
     },

@@ -18,6 +18,8 @@ class CreateReservationsTable extends Migration
             $table->foreignId('reservation_user');
             $table->foreignId('reservation_parking');
             $table->date('reservation_date');
+            $table->time('reservation_start');
+            $table->time('reservation_end');
             $table->timestamps();
         });
     }

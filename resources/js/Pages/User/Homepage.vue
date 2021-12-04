@@ -8,7 +8,7 @@
         class="hero-description text-xl"
       >Using the technology of computer vision it is now possible to see parking woo hebatnyeee</h1>
       <Button :type="button" class="m-1" href="/parking">Find parking</Button>
-      <Button :type="button" class="m-1" href="/reservation">Reserve Parking</Button>
+      <Button :type="button" class="m-1" href="route('reservation.homepage')">Reserve Parking</Button>
       <div class="mt-3"></div>
     </div>
     <div class="w-full h-screen below-hero flex justify-center mx-auto">
@@ -23,7 +23,7 @@
 <script>
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import { Head } from "@inertiajs/inertia-vue3";
-import Button from "@/Components/Button.vue";
+import Button from "@/Components/Custom/ButtonLink.vue";
 import Card from "@/Components/Card.vue";
 
 export default {

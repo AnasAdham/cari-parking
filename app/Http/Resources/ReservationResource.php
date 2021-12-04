@@ -19,7 +19,9 @@ class ReservationResource extends JsonResource
             'id' => $this->id,
             'reservation_user' => $this->reservation_user,
             'reservation_parking' => $this->reservation_parking,
-            'reservation_date' => $this->reservation_parking,
+            'reservation_date' => $this->reservation_date,
+            'reservation_start' => $this->reservation_start,
+            'reservation_end' => $this->reservation_end,
         ];
     }
 }

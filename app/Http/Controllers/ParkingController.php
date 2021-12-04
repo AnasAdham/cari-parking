@@ -62,46 +62,23 @@ class ParkingController extends Controller
      */
     public function store(Request $request)
     {
-        $parkings = Parking::firstOrCreate([
-            'id' => $request->parking_id
+        $parkings = Parking::firstOrNew([
+            'id' => $request->input('id'),
+            // 'parking_name' => $request->input('parking_name'),
+            // 'parking_status' => $request->input('parking_status'),
+            // 'parking_user' => $request->input('parking_user')
         ]);
-        if ($parkings->parking_status != 'reserved') {
-            $parkings->parking_name = $request->input('parking_name');
-            $parkings->parking_status = $request->input('parking_status');
-            $parkings->parking_user = $request->input('parking_user');
-        } else {
-            $parkings->status = 'wrong_parking';
-        }
-        if ($parkings->save()) {
-            return new ParkingResource($parkings);
-        }
+        $parkings->parking_name = $request->input('parking_name');
+        $parkings->parking_status = $request->input('parking_status');
+        $parkings->parking_user = $request->input('parking_user');
+        $parkings->save();
+        $parkings = Parking::all();
+        return ParkingResource::collection($parkings);
+        // TODO
+        // IF already reserved set the parking as wrong_parking
         $message = "New parking";
         // Broadcast to NewParkingInfo channel
         broadcast(new NewParkingInfo($message));
-
-        // try {
-        //     $parkings = Parking::findOrFail($request->parking_id);
-        //     if ($parkings->parking_status != 'reserved') {
-        //         $parkings->parking_name = $request->input('parking_name');
-        //         $parkings->parking_status = $request->input('parking_status');
-        //         $parkings->parking_user = $request->input('parking_user');
-        //     } else {
-        //         // TODO Broadcast message to dashboard parking at reserved parking
-        //     }
-        //     if ($parkings->save()) {
-        //         return new ParkingResource($parkings);
-        //     }
-        // } catch (ModelNotFoundException $e) {
-        //     $parkings = new Parking;
-        //     $parkings->id = $request->input('parking_id');
-        //     $parkings->parking_name = $request->input('parking_name');
-        //     $parkings->parking_status = $request->input('parking_status');
-        //     $parkings->parking_user = $request->input('parking_user');
-
-        //     if ($parkings->save()) {
-        //         return new ParkingResource($parkings);
-        //     }
-        // }
     }
 
     /**

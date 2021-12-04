@@ -27,11 +27,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user/{id}', [UserController::class, 'edit']);
     // Reservation route
     Route::get('/reservation', [ReservationController::class, 'index'])->name('reservation.homepage');
+    Route::post('/reservation', [ReservationController::class, 'showAllAvailableParkingToReserve'])->name('reservation.showAvailableParking');
+    Route::post('/reservation/create', [ReservationController::class, 'makeReservation'])->name('reservation.makeReservation');
     Route::get('/reservation/user/{id}', [ReservationController::class, 'show']);
     // Parking route
     Route::get('/parking', [ParkingController::class, 'index'])->name('parking.homepage');
     // Payment route
-    Route::get('/payment', [PaymentController::class, 'index']);
+    // Route::get('/payment', [PaymentController::class, 'index']);
 });
 
 

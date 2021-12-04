@@ -6,7 +6,7 @@
       <img src="http://via.placeholder.com/400x150" alt srcset />
     </div>
     <div class="flex justify-end mt-4">
-      <a href="#" class="text-xl font-medium text-indigo-500">Mak saya</a>
+      <a href="#" class="text-xl font-medium text-indigo-500">Anonymous</a>
     </div>
   </div>
 </template>
