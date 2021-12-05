@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ReservationResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Parking;
+use App\Models\User;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -94,10 +96,8 @@ class ReservationController extends Controller
 
 
     // Function for showing reservation specific to the user
-    public function showUserReservation()
+    public function show($id)
     {
-        // TODO be sure to authorized
-        $id = Auth::id();
         $reservations = Reservation::where('user_id', $id);
         return Inertia::render('Reservation/UserReservation', [
             'reservations' => $reservations

@@ -10,8 +10,22 @@
 
         <div class="content bg-yellow-100 p-2 space-y-3">
             <div class="container flex justify-start">
-                <Button class="m-1">Make a reservation</Button>
-                <Button class="m-1">View reservation</Button>
+                <Link
+                    :href="route('reservation.homepage')"
+                    class="button"
+                    :active="route().current('reservation.homepage')"
+                    >Make a reservation</Link
+                >
+                <Link
+                    :href="
+                        route('reservation.show', {
+                            id: $page.props.auth.user,
+                        })
+                    "
+                    :active="route().current('reservation.show')"
+                    class="button"
+                    >View Reservations</Link
+                >
                 <h1>{{ $page.props.auth.user.id }}</h1>
             </div>
             <div class="container h-full flex justify-center">
@@ -38,6 +52,7 @@
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
 import { Head } from "@inertiajs/inertia-vue3";
 import Button from "@/Components/Button.vue";
+import Link from "@/Components/NavLink.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import Input from "@/Components/Input.vue";
 import Label from "@/Components/Label.vue";
@@ -57,6 +72,7 @@ export default {
         Head,
         Input,
         Label,
+        Link,
     },
 };
 </script>

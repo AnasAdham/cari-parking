@@ -38,15 +38,7 @@
                                 <Link
                                     href="/reservation/create"
                                     method="post"
-                                    class="
-                                        bg-blue-500
-                                        hover:bg-blue-700
-                                        text-white
-                                        font-bold
-                                        py-2
-                                        px-4
-                                        rounded
-                                    "
+                                    class="button"
                                     :data="{
                                         user: $page.props.auth.user.id,
                                         parking: parking.id,
