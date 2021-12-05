@@ -20814,10 +20814,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getParkingInfo: function getParkingInfo() {
+      // TODO Trigger function to check if the parking is already reserved or not
+      // Inertia.post();
       // Get parking info using inertia
-      //  TODO Either use inertia reload or inertia visit depends on working or not
-      // TODO else use axious Seems
-      // !! Seems to work at tha moment
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia.reload({
         only: ["parkings"]
       });
@@ -22504,7 +22503,7 @@ var _withScopeId = function _withScopeId(n) {
 var _hoisted_1 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
     "class": "font-semibold text-xl text-gray-800 leading-tight"
-  }, "Parking View", -1
+  }, " Parking View ", -1
   /* HOISTED */
   );
 });
@@ -23011,7 +23010,7 @@ var _withScopeId = function _withScopeId(n) {
 var _hoisted_1 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h2", {
     "class": "font-semibold text-xl text-gray-800 leading-tight"
-  }, "Reserve your parking spot", -1
+  }, " Reserve your parking spot ", -1
   /* HOISTED */
   );
 });
@@ -23135,7 +23134,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         "class": "ml-3",
         type: "submit",
         disabled: $setup.form.processing
-      }, "Reserve", 8
+      }, " Reserve ", 8
       /* PROPS */
       , _hoisted_10)], 32
       /* HYDRATE_EVENTS */
@@ -23894,7 +23893,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#parking-lot[data-v-097ba13b] {\n  height: 560px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n#parking-lot[data-v-097ba13b] {\n    height: 560px;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -23966,7 +23965,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.content[data-v-3ccabcde] {\n  height: 80vh;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.content[data-v-3ccabcde] {\n    height: 80vh;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

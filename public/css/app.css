@@ -32225,7 +32225,51 @@ select {
   background-color: rgba(6, 78, 59, var(--tw-bg-opacity));
 }
 
-td{
+.reserved {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .reserved {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .reserved {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .reserved {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .reserved {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .reserved {
+    max-width: 1536px;
+  }
+}
+
+.reserved {
+  margin: 0.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  height: 83.333333%;
+  width: 83.333333%;
+  --tw-bg-opacity: 1;
+  background-color: rgba(30, 58, 138, var(--tw-bg-opacity));
+}
+
+td {
   border-bottom-width: 1px;
   --tw-border-opacity: 1;
   border-color: rgba(156, 163, 175, var(--tw-border-opacity));
@@ -32233,13 +32277,13 @@ td{
   text-align: center;
 }
 
-th{
+th {
   --tw-bg-opacity: 1;
   background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
   padding: 0.5rem;
 }
 
-.table-row-border{
+.table-row-border {
   border-right-width: 2px;
   border-left-width: 2px;
 }

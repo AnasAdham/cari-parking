@@ -28,15 +28,18 @@ class ReservationController extends Controller
 
         $parkings = Parking::all();
         // Retrieve date from interface
-        $date = Carbon::parse($request->reservation_date, 'Asia/Kuala_Lumpur')
-            ->setTimezone('UTC')
-            ->toDateString();
         $start = Carbon::parse($request->reservation_start, 'Asia/Kuala_Lumpur')
             ->setTimezone('UTC')
+            ->toTimeString();
+        $local_end = Carbon::parse($request->reservation_end, 'Asia/Kuala_Lumpur')
             ->toTimeString();
         $end = Carbon::parse($request->reservation_end, 'Asia/Kuala_Lumpur')
             ->setTimezone('UTC')
             ->toTimeString();
+
+        $date = Carbon::parse($request->reservation_date . " " . $local_end, 'Asia/Kuala_Lumpur')
+            ->setTimezone('UTC')
+            ->toDateString();
 
         $reservations = Reservation::whereDate('reservation_date', $date)
             ->whereTime('reservation_start', '>=', $start)
@@ -88,31 +91,6 @@ class ReservationController extends Controller
         return redirect()->route('reservation.homepage');
     }
 
-    // TODO this function is a temporary function to set the parking to reserved on the specific date
-    // This method of setting the parking status will be replaced with a schedule
-    public function setReserveParkingStatus()
-    {
-        // When Clicked get current time and compare to
-        $now = Carbon::now();
-        $reservations =
-            Reservation::whereDate('reservation_date', '=', $now->toDateTimeString())
-            ->whereTime('reservation_date', $now->toTimeString())
-            ->get();
-        // The set time in the parking reservation page
-        // dd($reservations->isEmpty());
-        if (!$reservations->isEmpty()) {
-            foreach ($reservations as $reservation) {
-                $parking = Parking::find($reservation->parking->id);
-                if ($parking->parking_status = "available") {
-                    $parking->parking_status = "reserved";
-                    $parking->save();
-                } else {
-                    // TODO
-                    // send error to user
-                }
-            }
-        }
-    }
 
 
     // Function for showing reservation specific to the user

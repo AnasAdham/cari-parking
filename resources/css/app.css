@@ -3,22 +3,25 @@
 @import "tailwindcss/utilities";
 
 .occupied {
-	@apply container mx-auto m-1 h-5/6 w-5/6 bg-red-900;
+    @apply container mx-auto m-1 h-5/6 w-5/6 bg-red-900;
 }
 .available {
-	@apply container mx-auto m-1 h-5/6 w-5/6 bg-green-900;
+    @apply container mx-auto m-1 h-5/6 w-5/6 bg-green-900;
+}
+.reserved {
+    @apply container mx-auto m-1 h-5/6 w-5/6 bg-blue-900;
 }
 
-td{
-	@apply text-center p-3 border-b border-gray-400;
+td {
+    @apply text-center p-3 border-b border-gray-400;
 }
 
-th{
-	@apply bg-gray-400 p-2;
+th {
+    @apply bg-gray-400 p-2;
 }
 
-.table-row-border{
-	@apply  border-l-2 border-r-2 ;
+.table-row-border {
+    @apply border-l-2 border-r-2;
 }
 
 .card {
