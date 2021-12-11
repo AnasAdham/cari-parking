@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Providers\NewParkingInfo;
+use App\Providers\NewMessage;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class UpdateParkingInfo
+class UpdateUserInterface
 {
     /**
      * Create the event listener.
@@ -21,10 +21,10 @@ class UpdateParkingInfo
     /**
      * Handle the event.
      *
-     * @param  NewParkingInfo  $event
+     * @param  \App\Providers\NewMessage  $event
      * @return void
      */
-    public function handle(NewParkingInfo $event)
+    public function handle(NewMessage $event)
     {
         //
     }

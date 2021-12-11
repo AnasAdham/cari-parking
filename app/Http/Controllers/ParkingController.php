@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Parking;
 use App\Http\Resources\ParkingResource as ParkingResource;
-use App\Providers\NewParkingInfo;
+use App\Events\NewParkingInfo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
@@ -29,6 +29,8 @@ class ParkingController extends Controller
         $parkings = Parking::all();
         // foreach parking check if reserved
 
+        // TODO this is for testing purposes
+        NewParkingInfo::dispatch();
 
         return Inertia::render('Dashboard', [
             'parkings' => $parkings

@@ -20809,8 +20809,8 @@ __webpack_require__.r(__webpack_exports__);
     Head: _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.Head
   },
   mounted: function mounted() {
-    getParkingInfo();
-    listen();
+    this.getParkingInfo();
+    this.listen();
   },
   methods: {
     getParkingInfo: function getParkingInfo() {
@@ -20820,13 +20820,12 @@ __webpack_require__.r(__webpack_exports__);
       _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_3__.Inertia.reload({
         only: ["parkings"]
       });
+      console.log("Getting parking");
     },
     listen: function listen() {
       // Listen to channel NewParkingInfo for new parking information
       Echo.channel("new-parking-info").listen("NewParkingInfo", function () {
-        // Then call getParkingInfo
-        console.log("New parking available");
-        getParkingInfo();
+        console.log("This is working");
       });
     }
   }
@@ -23876,8 +23875,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
-  cluster: "mt1",
+  key: "722f0f8e51ec5d1749ad",
+  cluster: "ap1",
   forceTLS: true
 });
 

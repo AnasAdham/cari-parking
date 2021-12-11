@@ -56,8 +56,8 @@ export default {
         Head,
     },
     mounted() {
-        getParkingInfo();
-        listen();
+        this.getParkingInfo();
+        this.listen();
     },
     methods: {
         getParkingInfo() {
@@ -65,13 +65,12 @@ export default {
             // Inertia.post();
             // Get parking info using inertia
             Inertia.reload({ only: ["parkings"] });
+            console.log("Getting parking");
         },
         listen() {
             // Listen to channel NewParkingInfo for new parking information
             Echo.channel("new-parking-info").listen("NewParkingInfo", () => {
-                // Then call getParkingInfo
-                console.log("New parking available");
-                getParkingInfo();
+                console.log("This is working");
             });
         },
     },
