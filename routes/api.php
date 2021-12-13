@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('parkings', [ParkingController::class, 'store']);
+Route::post('parkings/info', [ParkingController::class, 'storeParkingInfo']);
 Route::get('parkings', [ParkingController::class, 'getParkingInfoApi']);
 Route::post('reservation', [ReservationController::class, 'storeReservationApi']);
 Route::get('reservation', [ReservationController::class, 'getReservationInfoApi']);

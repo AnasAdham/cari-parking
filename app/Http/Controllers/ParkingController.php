@@ -37,18 +37,16 @@ class ParkingController extends Controller
         ]);
     }
 
-    public function getInfoFromMQTT()
+    public function storeParkingInfo(Request $request)
     {
-        // Get parkings from MQTT
-        // foreach ($messages as $message) {
-        //     $parking = Parking::find($message->id);
-        //     if ($parking->parking_status != "occupied") {
-        //         $parking->parking_status = $message->parking_status;
-        //         $parking->save();
-        //     } else {
-        //         // TODO send error message : The parking space is already occupied
-        //     }
-        // }
+        $array_of_data = $request->all();
+        foreach ($array_of_data as $data) {
+            $parking = Parking::find($data["id"]);
+            $parking->parking_status = $data["parking_status"];
+            $parking->save();
+        }
+        $parkings = Parking::all();
+        return ParkingResource::collection($parkings);
     }
     public function getParkingInfoApi(): AnonymousResourceCollection
     {
