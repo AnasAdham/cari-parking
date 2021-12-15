@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateParkingsTable extends Migration
+class CreateReservationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateParkingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('parkings', function (Blueprint $table) {
+        Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('parking_name');
-            $table->enum('parking_status', ['available', 'occupied', 'wrong_parking', 'reserved']);
-            $table->foreignId('parking_user');
+            $table->foreignId('reservation_user');
+            $table->foreignId('reservation_parking');
+            $table->date('reservation_date');
+            $table->time('reservation_start');
+            $table->time('reservation_end');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateParkingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('parkings');
+        Schema::dropIfExists('reservations');
     }
 }

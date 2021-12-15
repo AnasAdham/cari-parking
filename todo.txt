@@ -1,0 +1,12 @@
+
+Important
+- Edit the model for Reservation
+    - Add another column for end start time
+
+Not important
+- Create all the routes for the interface
+- Create new Class for customer
+- Create new Class for Account (Maybe)
+- Set scheduler for set parking to reserved
+- Set up MQTT send parking data
+				- For every parking if parking is already reserved shows error

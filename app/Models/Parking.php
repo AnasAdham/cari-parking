@@ -13,4 +13,9 @@ class Parking extends Model
         'parking_status',
         'parking_user'
     ];
+
+    public function reservation()
+    {
+        return $this->belongsTo(Parking::class)->withDefault();
+    }
 }
