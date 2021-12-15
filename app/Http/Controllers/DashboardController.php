@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use Request;
 use Inertia\Inertia;
+use App\Models\Parking;
+use App\Models\User;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -21,12 +25,24 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function showAllParking()
+    public function showAllParking(Request $request)
     {
-        // Show all parkings
-        $parkings = Parking::all();
-        return Inertia::render('Dashboard/Homepage', [
-            'parkings' => $parkings
+        return Inertia::render('Dashboard/AllParking', [
+            'parkings' => Parking::query()
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where('parking_name', 'like', "%{$search}%");
+                })
+                ->paginate(5),
+        ]);
+    }
+
+    public function showParking($id)
+    {
+        $parking = Parking::find($id);
+
+        return Inertia::render('Dashboard/Parking', [
+            'parking' => $parking,
+            'user' => $parking->user
         ]);
     }
 
@@ -35,7 +51,7 @@ class DashboardController extends Controller
         // Sort by value and show all parking
         $parkings = Parking::all()->orderByDesc($sortBy);
         return Inertia::render('Dashboard/Homepage', [
-            'parkings' => $parkings
+            'parkings' => $parkings,
         ]);
     }
 

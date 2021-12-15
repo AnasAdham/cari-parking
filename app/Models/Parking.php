@@ -18,4 +18,9 @@ class Parking extends Model
     {
         return $this->belongsTo(Parking::class)->withDefault();
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'parking_user');
+    }
 }
