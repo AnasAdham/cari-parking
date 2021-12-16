@@ -15,6 +15,7 @@
                     <p v-if="parkingView">Show Table View</p>
                 </Button>
                 <Input
+                    v-if="tableView"
                     class=""
                     v-model="search"
                     type="text"
@@ -47,13 +48,8 @@
                             <td>{{ parking.parking_status }}</td>
                             <td>{{ parking.parking_user }}</td>
                             <td>
-                                <Link
-                                    :href="
-                                        route('reservation.show.parking', {
-                                            id: parking.id,
-                                        })
-                                    "
-                                    >View Parking</Link
+                                <Button @click="viewParking(parking)"
+                                    >View</Button
                                 >
                             </td>
                         </tr>
@@ -61,13 +57,47 @@
                 </table>
             </div>
             <!-- Parking View -->
+            <div v-if="parkingView" id="parking-lot" class="grid grid-cols-5">
+                <div class="flex justify-center">
+                    <div class="my-auto h-96 w-32 bg-blue-100"></div>
+                </div>
+                <div class="col-span-3">
+                    <div
+                        class="
+                            h-full
+                            grid grid-cols-4
+                            container
+                            mx-auto
+                            bg-gray-300
+                            p-9
+                            gap-y-9
+                        "
+                    >
+                        <div
+                            v-for="parking in parkings.data"
+                            @click="viewParking(parking)"
+                            :key="parking.id"
+                            class="
+                                grid
+                                place-items-center
+                                text-white text-xl
+                                uppercase
+                            "
+                            :class="`${parking.parking_status} `"
+                            id="parking"
+                        >
+                            {{ parking.parking_name }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <div class="my-auto h-96 w-32 bg-blue-100"></div>
+                </div>
+            </div>
             <div
-                v-if="parkingView"
+                v-if="tableView"
                 class="container w-full flex flex-grow mx-auto"
             >
-                Show the parking view for the dashboard please
-            </div>
-            <div class="container w-full flex flex-grow mx-auto">
                 <div class="inline-flex">
                     <Link
                         class="
@@ -102,18 +132,53 @@ defineProps(["parkings"]);
 let search = ref("");
 let parkingView = ref(false);
 let tableView = ref(true);
+let hover = ref("");
 
+function viewParking(parking) {
+    // swal(`Viewing ${parking.name} with id: ${parking.id}, `"fdfdfdfa \n fjdfdfdf \n");
+    swal({
+        title: `Viewing ${parking.parking_name} with id: ${parking.id}`,
+        text: ` Parking status: ${parking.parking_status} \n Currently parked by user with id : ${parking.parking_user} \n`,
+        buttons: {
+            cancel: "Nevermind",
+            showUserDetails: {
+                text: "User details",
+                value: "user",
+            },
+            showParkingDetails: {
+                text: "More details",
+                value: "parking",
+            },
+        },
+    }).then((value) => {
+        switch (value) {
+            case "user":
+                swal("Clicked user");
+                break;
+
+            case "parking":
+                console.log(parking.id);
+                Inertia.get(`/dashboard/parking/${parking.id}`);
+                break;
+
+            default:
+        }
+    });
+}
 function toggleView() {
     // this.parkingView = !this.parkingView;
     // this.tableView = !this.parkingView;
     parkingView.value = !parkingView.value;
     tableView.value = !parkingView.value;
+    if (parkingView.value) {
+        search.value = "";
+    }
 }
 
 watch(search, (value) => {
     // console.log("Changed", value);
     Inertia.get(
-        "/dashboard/parking",
+        "/dashboard/parkings",
         { search: value },
         {
             preserveState: true,
@@ -123,6 +188,13 @@ watch(search, (value) => {
 </script>
 
 <style scoped>
+#parking:hover {
+    /* background-color: black; */
+    filter: brightness(200%);
+}
+#parking-lot {
+    height: 560px;
+}
 .content {
     height: 90vh;
 }
