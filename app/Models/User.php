@@ -41,9 +41,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public function parking()
-    {
-        return $this->belongsTo(Parking::class)->withDefault();
-    }
 }

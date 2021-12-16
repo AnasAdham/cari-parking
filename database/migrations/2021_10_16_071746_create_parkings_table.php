@@ -17,7 +17,6 @@ class CreateParkingsTable extends Migration
             $table->id();
             $table->string('parking_name');
             $table->enum('parking_status', ['available', 'occupied', 'wrong_parking', 'reserved']);
-            $table->foreignId('parking_user');
             $table->timestamps();
         });
     }

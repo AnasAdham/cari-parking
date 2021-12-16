@@ -40,11 +40,6 @@ class DashboardController extends Controller
     public function showParking($id)
     {
         $parking = Parking::find($id);
-        if ($parking->user !== null) {
-            $user = $parking->user;
-        } else {
-            $user = null;
-        }
 
         if ($parking->parking_status == "reserved") {
             $reservation = Reservation::where('reservation_parking', $parking->id)
@@ -55,7 +50,6 @@ class DashboardController extends Controller
 
         return Inertia::render('Dashboard/Parking', [
             'parking' => $parking,
-            'user' => $user,
             'reservation' => $reservation
         ]);
     }

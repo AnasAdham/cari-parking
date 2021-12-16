@@ -62,16 +62,15 @@ class ParkingController extends Controller
      */
     public function store(Request $request)
     {
-        $parkings = Parking::firstOrNew([
-            'id' => $request->input('id'),
-            // 'parking_name' => $request->input('parking_name'),
-            // 'parking_status' => $request->input('parking_status'),
-            // 'parking_user' => $request->input('parking_user')
-        ]);
-        $parkings->parking_name = $request->input('parking_name');
-        $parkings->parking_status = $request->input('parking_status');
-        $parkings->parking_user = $request->input('parking_user');
-        $parkings->save();
+        $parkings = $request->all();
+        foreach ($parkings as $data) {
+            $parking = Parking::firstOrNew([
+                'id' => $data["id"]
+            ]);
+            $parking->parking_name = $data["parking_name"];
+            $parking->parking_status = $data["parking_status"];
+            $parking->save();
+        }
         $parkings = Parking::all();
         return ParkingResource::collection($parkings);
         // TODO

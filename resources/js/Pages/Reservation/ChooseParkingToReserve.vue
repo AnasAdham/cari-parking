@@ -20,7 +20,6 @@
                             <th>Parking ID</th>
                             <th>Parking Name</th>
                             <th>Parking Status</th>
-                            <th>Parking User</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
@@ -33,7 +32,6 @@
                             <td>{{ parking.id }}</td>
                             <td>{{ parking.parking_name }}</td>
                             <td>{{ parking.parking_status }}</td>
-                            <td>{{ parking.parking_user }}</td>
                             <td>
                                 <Link
                                     href="/reservation/create"
@@ -65,30 +63,30 @@ import Input from "@/Components/Input.vue";
 import Label from "@/Components/Label.vue";
 
 export default {
-    setup() {
-        const form = useForm({
-            user_id: null,
-            parking_id: null,
-            reservation_date: null,
-            reservation_start: null,
-            reservation_end: null,
-        });
-        return { form };
-    },
-    components: {
-        BreezeAuthenticatedLayout,
-        Button,
-        Head,
-        Input,
-        Label,
-        Link,
-    },
-    props: ["parkings", "reservation_data"],
+  setup() {
+    const form = useForm({
+      user_id: null,
+      parking_id: null,
+      reservation_date: null,
+      reservation_start: null,
+      reservation_end: null,
+    });
+    return { form };
+  },
+  components: {
+    BreezeAuthenticatedLayout,
+    Button,
+    Head,
+    Input,
+    Label,
+    Link,
+  },
+  props: ["parkings", "reservation_data"],
 };
 </script>
 
 <style scoped>
 .content {
-    height: 80vh;
+  height: 80vh;
 }
 </style>

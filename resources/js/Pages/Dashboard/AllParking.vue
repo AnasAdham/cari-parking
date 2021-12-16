@@ -33,25 +33,15 @@
                             <th>ID</th>
                             <th>NAME</th>
                             <th>STATUS</th>
-                            <th>USER</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            v-for="parking in parkings.data"
-                            :key="parking.id"
-                            class="table-row-border"
-                        >
+                        <tr v-for="parking in parkings.data" :key="parking.id" class="table-row-border" >
                             <td>{{ parking.id }}</td>
                             <td>{{ parking.parking_name }}</td>
                             <td>{{ parking.parking_status }}</td>
-                            <td>{{ parking.parking_user }}</td>
-                            <td>
-                                <Button @click="viewParking(parking)"
-                                    >View</Button
-                                >
-                            </td>
+                            <td> <Button @click="viewParking(parking)"> View</Button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -135,71 +125,43 @@ let tableView = ref(true);
 let hover = ref("");
 
 function viewParking(parking) {
-    // swal(`Viewing ${parking.name} with id: ${parking.id}, `"fdfdfdfa \n fjdfdfdf \n");
-    swal({
-        title: `Viewing ${parking.parking_name} with id: ${parking.id}`,
-        text: ` Parking status: ${parking.parking_status} \n Currently parked by user with id : ${parking.parking_user} \n`,
-        buttons: {
-            cancel: "Nevermind",
-            showUserDetails: {
-                text: "User details",
-                value: "user",
-            },
-            showParkingDetails: {
-                text: "More details",
-                value: "parking",
-            },
-        },
-    }).then((value) => {
-        switch (value) {
-            case "user":
-                swal("Clicked user");
-                break;
-
-            case "parking":
-                console.log(parking.id);
-                Inertia.get(`/dashboard/parking/${parking.id}`);
-                break;
-
-            default:
-        }
-    });
+  Inertia.get(`/dashboard/parking/${parking.id}`);
 }
 function toggleView() {
-    // this.parkingView = !this.parkingView;
-    // this.tableView = !this.parkingView;
-    parkingView.value = !parkingView.value;
-    tableView.value = !parkingView.value;
-    if (parkingView.value) {
-        search.value = "";
-    }
+  // this.parkingView = !this.parkingView;
+  // this.tableView = !this.parkingView;
+  parkingView.value = !parkingView.value;
+  tableView.value = !parkingView.value;
+  if (parkingView.value) {
+    search.value = "";
+  }
 }
 
 watch(search, (value) => {
-    // console.log("Changed", value);
-    Inertia.get(
-        "/dashboard/parkings",
-        { search: value },
-        {
-            preserveState: true,
-        }
-    );
+  // console.log("Changed", value);
+  Inertia.get(
+    "/dashboard/parkings",
+    { search: value },
+    {
+      preserveState: true,
+    }
+  );
 });
 </script>
 
 <style scoped>
 #parking:hover {
-    /* background-color: black; */
-    filter: brightness(200%);
+  /* background-color: black; */
+  filter: brightness(200%);
 }
 #parking-lot {
-    height: 560px;
+  height: 560px;
 }
 .content {
-    height: 90vh;
+  height: 90vh;
 }
 .btn {
-    background-color: green;
-    padding: 10px;
+  background-color: green;
+  padding: 10px;
 }
 </style>

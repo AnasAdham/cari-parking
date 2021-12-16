@@ -31,18 +31,15 @@ class ReservationController extends Controller
         $parkings = Parking::all();
         // Retrieve date from interface
         $start = Carbon::parse($request->reservation_start, 'Asia/Kuala_Lumpur')
-            ->setTimezone('UTC')
             ->toTimeString();
-        $local_end = Carbon::parse($request->reservation_end, 'Asia/Kuala_Lumpur')
-            ->toTimeString();
+        // Retrieve reservation start time
         $end = Carbon::parse($request->reservation_end, 'Asia/Kuala_Lumpur')
-            ->setTimezone('UTC')
             ->toTimeString();
 
-        $date = Carbon::parse($request->reservation_date . " " . $local_end, 'Asia/Kuala_Lumpur')
-            ->setTimezone('UTC')
+        $date = Carbon::parse($request->reservation_date, 'Asia/Kuala_Lumpur')
             ->toDateString();
 
+        dd($end);
         $reservations = Reservation::whereDate('reservation_date', $date)
             ->whereTime('reservation_start', '>=', $start)
             ->orwhereTime('reservation_end', '<=', $end)

@@ -11,16 +11,10 @@ class Parking extends Model
     protected $fillable = [
         'parking_name',
         'parking_status',
-        'parking_user'
     ];
 
     public function reservation()
     {
         return $this->belongsTo(Parking::class)->withDefault();
-    }
-
-    public function user()
-    {
-        return $this->hasOne(User::class, 'id', 'parking_user');
     }
 }

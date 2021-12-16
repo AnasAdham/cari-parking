@@ -22,7 +22,8 @@ use Inertia\Inertia;
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard route
     Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/dashboard/parkings', [DashboardController::class, 'showAllParking']);
+    Route::get('/dashboard/parkings', [DashboardController::class, 'showAllParking'])
+        ->name('dashboard.parking');
     Route::get('/dashboard/parking/{id}', [DashboardController::class, 'showParking'])
         ->name('dashboard.show.parking');
     // User route
