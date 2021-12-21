@@ -39,13 +39,11 @@ class ReservationController extends Controller
         $date = Carbon::parse($request->reservation_date, 'Asia/Kuala_Lumpur')
             ->toDateString();
 
-        dd($end);
         $reservations = Reservation::whereDate('reservation_date', $date)
             ->whereTime('reservation_start', '>=', $start)
             ->orwhereTime('reservation_end', '<=', $end)
             ->get();
-        // dd($start);
-        // dd($reservations);
+
         foreach ($parkings as $parking) {
             $parking->parking_status = 'available';
             $counter = 0;

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\Payment;
 
 class PaymentController extends Controller
 {
@@ -13,7 +15,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Payment/Index');
     }
 
     /**
@@ -34,7 +36,10 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $stripeCharge = $request->user()->charge(
+            100,
+            $request->paymentMethodId
+        );
     }
 
     /**

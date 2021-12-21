@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Inertia\Inertia;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class ParkingController extends Controller
 {
@@ -26,16 +27,24 @@ class ParkingController extends Controller
 
         // if parking is reserved at now then display as reserved
         // else show parking as either occupied or available
+        Artisan::command('reserved:update', function () {
+        });
         $parkings = Parking::all();
         // foreach parking check if reserved
 
         // TODO this is for testing purposes
-        NewParkingInfo::dispatch();
+        // NewParkingInfo::dispatch();
+        // broadcast(new NewParkingInfo());
 
         return Inertia::render('Dashboard', [
             'parkings' => $parkings
         ]);
     }
+
+    /**
+     * Store the parking data retrived from MQTT
+     *
+     */
 
     public function storeParkingInfo(Request $request)
     {
@@ -48,6 +57,9 @@ class ParkingController extends Controller
         $parkings = Parking::all();
         return ParkingResource::collection($parkings);
     }
+    /**
+     *  Get parking info using get method
+     */
     public function getParkingInfoApi(): AnonymousResourceCollection
     {
         $parkings = Parking::all();

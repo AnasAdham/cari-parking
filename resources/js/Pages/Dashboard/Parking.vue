@@ -44,6 +44,7 @@
                     <div class="col-span-5 flex flex-row">
                         <Link v-if="hasReservation" class="butang m-2" as="button">View Reservation</Link>
                     </div>
+
                 </div>
             </div>
         </div>

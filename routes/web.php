@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PaymentController;
 use App\Models\Parking;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,21 +27,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard.parking');
     Route::get('/dashboard/parking/{id}', [DashboardController::class, 'showParking'])
         ->name('dashboard.show.parking');
+
     // User route
     Route::get('/', [UserController::class, 'index'])->name('user.homepage');
     Route::get('/user/{id}', [UserController::class, 'edit']);
+
     // Reservation route
     Route::get('/reservation', [ReservationController::class, 'index'])
         ->name('reservation.homepage');
     Route::post('/reservation', [ReservationController::class, 'showAllAvailableParkingToReserve'])
         ->name('reservation.showAvailableParking');
-    Route::post('/reservation/create', [ReservationController::class, 'makeReservation'])->name('reservation.makeReservation');
+    Route::post('/reservation/create', [ReservationController::class, 'makeReservation'])
+        ->name('reservation.makeReservation');
     Route::get('/reservation/user/{id}', [ReservationController::class, 'show'])
         ->name('reservation.show');
+
     // Parking route
     Route::get('/parking', [ParkingController::class, 'index'])->name('parking.homepage');
+
     // Payment route
-    // Route::get('/payment', [PaymentController::class, 'index']);
+    Route::get('/payment', [PaymentController::class, 'index'])->name('payment');
 });
 
 
