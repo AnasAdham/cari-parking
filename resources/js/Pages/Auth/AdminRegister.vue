@@ -62,7 +62,7 @@ export default {
                 email: '',
                 password: '',
                 password_confirmation: '',
-                user_type: 'customer',
+                user_type: 'admin',
                 terms: false,
             })
         }

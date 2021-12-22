@@ -6,8 +6,7 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight"> Parking View </h2>
     </template>
-    <div class="container mx-auto">
-
+    <div class="container mx-auto mt-10">
       <label for="amount">Amount</label>
       <input
         type="text"
