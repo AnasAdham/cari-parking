@@ -20,6 +20,10 @@ use Inertia\Inertia;
 |
 */
 
+Route::get('/testing', function() {
+    return Inertia::render('Dashboard');
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
 
 
@@ -64,13 +68,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/user/{id}', [ReservationController::class, 'show'])
                 ->name('reservation.show');
         });
-        Route::prefix('/payment')->group(function () {
-            // Parking route
+
+        // Parking route
+        Route::prefix('/parking')->group(function () {
             Route::get('/', [ParkingController::class, 'index'])
                 ->name('parking.homepage');
         });
+
+        // Payment route
         Route::prefix('/payment')->group(function () {
-            // Payment route
             // TODO set as view payment
             Route::get('/', [PaymentController::class, 'index'])
                 ->name('payment');

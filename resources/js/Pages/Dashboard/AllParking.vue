@@ -14,19 +14,10 @@
                     <p v-if="tableView">Show Parking View</p>
                     <p v-if="parkingView">Show Table View</p>
                 </Button>
-                <Input
-                    v-if="tableView"
-                    class=""
-                    v-model="search"
-                    type="text"
-                    placeholder="Search.. "
-                />
+                <Input v-if="tableView" class="" v-model="search" type="text" placeholder="Search.. " />
             </div>
             <!-- Table View -->
-            <div
-                v-if="tableView"
-                class="container w-full flex flex-grow mx-auto"
-            >
+            <div v-if="tableView" class="container w-full flex flex-grow mx-auto" >
                 <table class="w-full">
                     <thead>
                         <tr>
@@ -52,57 +43,23 @@
                     <div class="my-auto h-96 w-32 bg-blue-100"></div>
                 </div>
                 <div class="col-span-3">
-                    <div
-                        class="
-                            h-full
-                            grid grid-cols-4
-                            container
-                            mx-auto
-                            bg-gray-300
-                            p-9
-                            gap-y-9
-                        "
-                    >
-                        <div
-                            v-for="parking in parkings.data"
-                            @click="viewParking(parking)"
+                    <div class=" h-full grid grid-cols-4 container mx-auto bg-gray-300 p-9 gap-y-9 " >
+                        <div v-for="parking in parkings.data" @click="viewParking(parking)"
                             :key="parking.id"
-                            class="
-                                grid
-                                place-items-center
-                                text-white text-xl
-                                uppercase
-                            "
+                            class=" grid place-items-center text-white text-xl uppercase "
                             :class="`${parking.parking_status} `"
                             id="parking"
-                        >
-                            {{ parking.parking_name }}
-                        </div>
+                        > {{ parking.parking_name }} </div>
                     </div>
                 </div>
                 <div class="flex justify-center">
                     <div class="my-auto h-96 w-32 bg-blue-100"></div>
                 </div>
             </div>
-            <div
-                v-if="tableView"
-                class="container w-full flex flex-grow mx-auto"
-            >
+            <div v-if="tableView" class="container w-full flex flex-grow mx-auto" >
                 <div class="inline-flex">
-                    <Link
-                        class="
-                            bg-gray-300
-                            hover:bg-gray-400
-                            text-gray-800
-                            font-bold
-                            py-2
-                            px-4
-                            rounded-l
-                        "
-                        as="button"
-                        v-for="link in parkings.links"
-                        :href="link.url"
-                        v-html="link.label"
+                    <Link class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l "
+                        as="button" v-for="link in parkings.links" :href="link.url" v-html="link.label"
                     ></Link>
                 </div>
             </div>

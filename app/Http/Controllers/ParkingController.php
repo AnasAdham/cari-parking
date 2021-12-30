@@ -36,7 +36,7 @@ class ParkingController extends Controller
         // NewParkingInfo::dispatch();
         // broadcast(new NewParkingInfo());
 
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Parking/Index', [
             'parkings' => $parkings
         ]);
     }
