@@ -18,14 +18,15 @@ class UserController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id);
-        if(Auth::user()->cannot('view', $user)){
-            return Redirect::back()->with('errorMessage', 'You cannot view other user profile');
-        }
-        return Inertia::render('Account/Index', [
-            'user' => $user,
-            'account' => $user->account
-        ]);
+        // $user = User::find($id);
+        // if(Auth::user()->cannot('view', $user)){
+        //     return Redirect::back()->with('errorMessage', 'You cannot view other user profile');
+        // }
+        // return Inertia::render('Account/Index', [
+        //     'user' => $user,
+        //     'account' => $user->account
+        // ]);
+        return Inertia::render('User/ManageAccount');
     }
 
     public function update(Request $request, $id)

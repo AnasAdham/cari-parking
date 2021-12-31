@@ -20,9 +20,11 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/testing', function() {
+Route::get('/testing', function () {
     return Inertia::render('Dashboard');
 });
+Route::get('/', [UserController::class, 'index'])
+    ->name('user.homepage');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
@@ -45,8 +47,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     Route::middleware('can:isCustomer, App\Models\User')->group(function () {
         // User route
-        Route::get('/', [UserController::class, 'index'])
-            ->name('user.homepage');
         // TODO
         Route::get('/user/{id}', [UserController::class, 'show'])
             ->name('user.show');
@@ -80,12 +80,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
             // TODO set as view payment
             Route::get('/', [PaymentController::class, 'index'])
                 ->name('payment');
+            Route::post('/store', [PaymentController::class, 'store'])
+                ->name('payment.store');
+            Route::get('/status', [PaymentController::class, 'status'])
+                ->name('payment.status');
+            Route::post('/callback', [PaymentController::class, 'callback'])
+                ->name('payment.callback');
             Route::get('/{id}', [PaymentController::class, 'show'])
                 ->name('payment.show');
             Route::post('/{id}', [PaymentController::class, 'update'])
                 ->name('payment.update');
-            Route::post('/', [PaymentController::class, 'store'])
-                ->name('payment.store');
         });
     });
 });

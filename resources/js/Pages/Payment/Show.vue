@@ -1,12 +1,11 @@
-<template lang="html">
-    <Head title="View Reservation" />
-
-    <BreezeAuthenticatedLayout>
-    <div class="flex flex-col sm:flex-row font-bold text-4xl space-x-1">
-    <span>Reservation / </span>
+<template>
+  <Head title="User's payment"/>
+  <BreezeAuthenticatedLayout>
+   <div class="flex flex-col sm:flex-row font-bold text-4xl space-x-1">
+    <span>Payment / </span>
     <span class="text-indigo-400">anasadham</span>
   </div>
-        <div class="bg-yellow-100 h-screen p-8 rounded-md w-full hidden md:block">
+   <div class="bg-yellow-100 h-screen p-8 rounded-md w-full hidden md:block">
   <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
     <div class="inline-block min-w-full shadow-lg rounded-lg overflow-hidden">
       <table class="min-w-full leading-normal">
@@ -104,33 +103,21 @@
     </div>
   </div>
 </div>
-    </BreezeAuthenticatedLayout>
+  </BreezeAuthenticatedLayout>
 </template>
+
 <script>
-import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue";
-import { Head } from "@inertiajs/inertia-vue3";
-import { useForm } from "@inertiajs/inertia-vue3";
-import Button from "@/Components/Button.vue";
-import Link from "@/Components/NavLink.vue";
-
-import Input from "@/Components/Input.vue";
-import Label from "@/Components/Label.vue";
-
+import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue"
+import {Head} from "@inertiajs/inertia-vue3"
 export default {
     components: {
         BreezeAuthenticatedLayout,
-        Button,
-        Head,
-        Input,
-        Label,
-        Link,
-    },
-    props: ["reservations"],
-};
+        Head
+    }
+
+}
 </script>
 
-<style scoped>
-.content {
-    height: 80vh;
-}
+<style>
+
 </style>

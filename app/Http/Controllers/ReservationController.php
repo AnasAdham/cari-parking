@@ -93,10 +93,11 @@ class ReservationController extends Controller
     // Function for showing reservation specific to the user
     public function show($id)
     {
-        $reservations = Reservation::where('user_id', $id);
-        return Inertia::render('Reservation/UserReservation', [
-            'reservations' => $reservations
-        ]);
+        // $reservations = Reservation::where('user_id', $id);
+        // return Inertia::render('Reservation/UserReservation', [
+        //     'reservations' => $reservations
+        // ]);
+        return Inertia::render('Reservation/UserReservation');
     }
 
     // Function for canceling reservation

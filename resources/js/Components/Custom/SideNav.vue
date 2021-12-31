@@ -3,54 +3,69 @@
     <div class="sidebar absolute top-0 bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
 
       <!-- logo -->
-      <a
-        href="#"
+      <Link
+        href="/"
         class="text-white flex items-center space-x-2 px-4"
       >
       <BreezeApplicationLogo class="w-8 h-8"/>
         <span class="text-2xl font-extrabold">Cari Parking</span>
-      </a>
+      </Link>
 
       <!-- nav -->
-      <nav>
-        <a
+      <nav v-if="$page.props.auth.user.user_type === `admin`">
+        <!-- <a
           href="#"
           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
         >
-          Home
-        </a>
-        <a
-          href=""
+          Dashboard
+        </a> -->
+        <Link
+          href="/dashboard/parkings"
           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
         >
-          About
-        </a>
-        <a
-          href=""
-          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
-        >
-          Features
-        </a>
-        <a
-          href=""
-          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
-        >
-          Pricing
-        </a>
-        <div class="dropdown block mb-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
-          <Link class="dropbtn">Click me</Link>
+          Parking
+        </Link>
+        <hr>
+        <div class="dropdown block mt-5 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+          <Link class="dropbtn">{{ $page.props.auth.user.name }}</Link>
           <div class="dropdown-content">
-              <Link>Click me </Link>
-              <Link>Click me </Link>
-              <Link>Click me </Link>
-              <Link>Click me </Link>
+              <Link href="/user/1">Account</Link>
+              <Link :href="route('logout')" method="post" >Logout</Link>
+          </div>
+        </div>
+      </nav>
+      <nav v-if="$page.props.auth.user.user_type === `customer`">
+        <!-- <a
+          href="#"
+          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
+        >
+          Dashboard
+        </a> -->
+        <Link
+          href="/parking"
+          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
+        >
+          Parking
+        </Link>
+        <div class="dropdown block mb-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+          <Link class="dropbtn">Reservation</Link>
+          <div class="dropdown-content">
+              <Link href="/reservation/user/1">View reservation</Link>
+              <Link href="/reservation">Make reservation</Link>
+          </div>
+        </div>
+        <div class="dropdown block mb-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+          <Link class="dropbtn">Payment</Link>
+          <div class="dropdown-content">
+              <Link href="/payment">Make payment</Link>
+              <Link href="/payment/1">View payment</Link>
           </div>
         </div>
         <hr>
         <div class="dropdown block mt-5 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
           <Link class="dropbtn">{{ $page.props.auth.user.name }}</Link>
           <div class="dropdown-content">
-              <Link>Account</Link>
+              <Link href="/user/1">Account</Link>
               <Link :href="route('logout')" method="post" >Logout</Link>
           </div>
         </div>

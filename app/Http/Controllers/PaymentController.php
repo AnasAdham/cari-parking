@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 
 class PaymentController extends Controller
 {
@@ -37,40 +38,36 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $some_data = array(
-            'userSecretKey'=> config('toyyibpay.key'),
-            'categoryCode'=> config('toyyibpay.category'),
-            'billName'=>'Parking Fee',
-            'billDescription'=>'Fee for parking per minutes',
-            'billPriceSetting'=>0,
-            'billPayorInfo'=>1,
-            'billAmount'=>100,
-            'billReturnUrl'=> route('payment.show'),
-            'billCallbackUrl'=>'http://bizapp.my/paystatus',
-            'billExternalReferenceNo' => 'AFR341DFI',
-            'billTo'=>'John Doe',
-            'billEmail'=>'jd@gmail.com',
-            'billPhone'=>'0194342411',
-            'billSplitPayment'=>0,
-            'billSplitPaymentArgs'=>'',
-            'billPaymentChannel'=>'0',
-            'billContentEmail'=>'Thank you for purchasing our product!',
-            'billChargeToCustomer'=>1
-          );
+        $options = array(
+            'userSecretKey' => config('toyyibpay.key'),
+            'categoryCode' => config('toyyibpay.category'),
+            'billName' => 'Parking Fee',
+            'billDescription' => 'Fee for parking per minutes',
+            'billPriceSetting' => 1,
+            'billPayorInfo' => 1,
+            'billAmount' => 100,
+            'billReturnUrl' => route('payment.status'),
+            'billCallbackUrl' => route('payment.callback'),
+            'billExternalReferenceNo' => 'Bill-1',
+            'billTo' => 'John Doe',
+            'billEmail' => 'jd@gmail.com',
+            'billPhone' => '0194342411',
+            'billSplitPayment' => 0,
+            'billSplitPaymentArgs' => '',
+            'billPaymentChannel' => 0,
+            'billContentEmail' => 'Thank you for purchasing our product!',
+            'billChargeToCustomer' => 2
+        );
+        $url = "https://dev.toyyibpay.com/index.php/api/createBill";
+        $response = Http::asForm()->post($url, $options);
+        $billCode = $response[0]['BillCode'];
 
-          $curl = curl_init();
-          curl_setopt($curl, CURLOPT_POST, 1);
-          curl_setopt($curl, CURLOPT_URL, 'https://toyyibpay.com/index.php/api/createBill');
-          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-          curl_setopt($curl, CURLOPT_POSTFIELDS, $some_data);
+        return Inertia::location('https://dev.toyyibpay.com/' . $billCode);
+    }
 
-          $options = json_decode(curl_exec($curl));
-          dd($options);
-
-          // Cara youtube
-          $url = 'https://toyyibpay.com/index.php/api/createBill';
-          $response = Http::asForm()->post($url, $options);
-
+    function status(){
+        $response = request()->all([ 'status', 'billcode', 'order_id']);
+        return Redirect::route('payment')->with('success', 'Payment Success');
     }
 
     /**
@@ -81,7 +78,7 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        //
+        return Inertia::render('Payment/Show');
     }
 
     /**

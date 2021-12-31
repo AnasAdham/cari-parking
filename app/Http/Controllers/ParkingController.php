@@ -55,6 +55,7 @@ class ParkingController extends Controller
             $parking->save();
         }
         $parkings = Parking::all();
+        NewParkingInfo::dispatch();
         return ParkingResource::collection($parkings);
     }
     /**

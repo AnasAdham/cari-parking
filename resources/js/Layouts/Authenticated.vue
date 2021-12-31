@@ -26,7 +26,7 @@
     <SideNav />
 
     <!-- content -->
-    <div class="flex-1 p-10 bg-yellow-100 min-h-screen md:min-h-full pt-20 md:pt-3 ">
+    <div :class="$page.props.auth.user.user_type === `admin` ? `bg-blue-100`: 'bg-yellow-100 '" class="flex-1 p-10 min-h-screen md:min-h-full pt-20 md:pt-3 ">
       <slot />
     </div>
 
