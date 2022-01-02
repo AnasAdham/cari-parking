@@ -27,6 +27,12 @@ class ReservationController extends Controller
             'reservation_start' => 'required',
             'reservation_end' => 'required',
         ]);
+        // TODO
+        // If reservation start < now+1hour
+        $nowPlusOneHour = Carbon::now()->addHours(1);
+
+        // Then redirect back "Reservation must be one hour or more from now"
+
 
         $parkings = Parking::all();
         // Retrieve date from interface
@@ -39,6 +45,14 @@ class ReservationController extends Controller
         $date = Carbon::parse($request->reservation_date, 'Asia/Kuala_Lumpur')
             ->toDateString();
 
+
+        if(Carbon::parse($date ." ". $start)->lessThanOrEqualTo($nowPlusOneHour)){
+            return Redirect::back()->with('error', 'Reservation must be made one hour before current time');
+        }
+
+
+
+        // Check for reservation that is available in the current date and time
         $reservations = Reservation::whereDate('reservation_date', $date)
             ->whereTime('reservation_start', '>=', $start)
             ->orwhereTime('reservation_end', '<=', $end)
@@ -115,7 +129,7 @@ class ReservationController extends Controller
         return Redirect::route('user.reservation')->with('errorMessage', 'Cancelation fail');
     }
 
-    // API for development use
+    // !! API for development use
     public function storeReservationApi(Request $request)
     {
         $reservations = Reservation::firstOrCreate([
@@ -131,7 +145,7 @@ class ReservationController extends Controller
         }
     }
 
-    // API for development use
+    // !! API for development use
     public function getReservationInfoApi(): AnonymousResourceCollection
     {
         $reservations = Reservation::all();

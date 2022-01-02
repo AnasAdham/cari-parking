@@ -32181,6 +32181,50 @@ select {
   background-color: rgba(127, 29, 29, var(--tw-bg-opacity));
 }
 
+.wrong_parking {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .wrong_parking {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .wrong_parking {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wrong_parking {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .wrong_parking {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .wrong_parking {
+    max-width: 1536px;
+  }
+}
+
+.wrong_parking {
+  margin: 0.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  height: 83.333333%;
+  width: 83.333333%;
+  --tw-bg-opacity: 1;
+  background-color: rgba(76, 29, 149, var(--tw-bg-opacity));
+}
+
 .available {
   width: 100%;
 }

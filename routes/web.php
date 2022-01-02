@@ -23,8 +23,10 @@ use Inertia\Inertia;
 Route::get('/testing', function () {
     return Inertia::render('Dashboard');
 });
-Route::get('/', [UserController::class, 'index'])
-    ->name('user.homepage');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/', [UserController::class, 'index'])
+        ->name('user.homepage');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
 

@@ -30,12 +30,6 @@ class ParkingController extends Controller
         Artisan::command('reserved:update', function () {
         });
         $parkings = Parking::all();
-        // foreach parking check if reserved
-
-        // TODO this is for testing purposes
-        // NewParkingInfo::dispatch();
-        // broadcast(new NewParkingInfo());
-
         return Inertia::render('Parking/Index', [
             'parkings' => $parkings
         ]);
@@ -51,7 +45,11 @@ class ParkingController extends Controller
         $array_of_data = $request->all();
         foreach ($array_of_data as $data) {
             $parking = Parking::find($data["id"]);
-            $parking->parking_status = $data["parking_status"];
+            if ($parking->parking_status == "reserved") {
+                $parking->parking_status = "wrong_parking";
+            } else {
+                $parking->parking_status = $data["parking_status"];
+            }
             $parking->save();
         }
         $parkings = Parking::all();
@@ -81,16 +79,16 @@ class ParkingController extends Controller
                 'id' => $data["id"]
             ]);
             $parking->parking_name = $data["parking_name"];
-            $parking->parking_status = $data["parking_status"];
+            if ($parking->parking_status == "reserved") {
+                $parking->parking_status = "wrong_parking";
+            } else {
+                $parking->parking_status = $data["parking_status"];
+            }
             $parking->save();
         }
         $parkings = Parking::all();
+        NewParkingInfo::dispatch();
         return ParkingResource::collection($parkings);
-        // TODO
-        // IF already reserved set the parking as wrong_parking
-        $message = "New parking";
-        // Broadcast to NewParkingInfo channel
-        broadcast(new NewParkingInfo($message));
     }
 
     /**
