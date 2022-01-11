@@ -18,34 +18,44 @@ class UserController extends Controller
 
     public function show($id)
     {
-        // $user = User::find($id);
-        // if(Auth::user()->cannot('view', $user)){
-        //     return Redirect::back()->with('errorMessage', 'You cannot view other user profile');
-        // }
-        // return Inertia::render('Account/Index', [
-        //     'user' => $user,
-        //     'account' => $user->account
-        // ]);
-        return Inertia::render('User/ManageAccount');
+        $user = User::find($id);
+        $account = Account::where('user_id', $id)->first();
+        if(Auth::user()->cannot('view', $user)){
+            return Redirect::back()->with('errorMessage', 'You cannot view other user profile');
+        }
+        // dd($account->id);
+        return Inertia::render('User/ManageAccount', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'phone_number' => $account->phone_number,
+                'license_plate' => $account->license_plate,
+                'address' => $account->address,
+            ]
+        ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'no_plate' => 'required|string|max:7',
+            'name' => 'required',
+            'phone_number' => 'required',
+            'license_plate' => 'required',
+            'address' => 'required',
         ]);
         $user = User::find($id);
         if (Auth::user()->cannot('view', $user)) {
             return Redirect::back()->with('errorMessage', 'You cannot edit other user profile');
         }
-        Account::find($user->account)->update($request->validated());
-        // $account = Account::find($user->account);
-        // $account->first_name = $request->first_name;
-        // $account->last_name = $request->last_name;
-        // $account->no_plate = $request->no_plate;
-        // $account->save();
+        Account::where('user_id', $id)->update([
+            'phone_number' => $request->phone_number,
+            'license_plate' => $request->license_plate,
+            'address' => $request->address
+            ]);
+        User::find($id)->update([
+            'name' => $request->name
+        ]);
+        return Redirect::back()->with('success', 'Update successful !!');
     }
 
     public function destroy( $id)

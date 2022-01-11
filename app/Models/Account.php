@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'phone_number',
+        'license_plate',
+        'address'
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

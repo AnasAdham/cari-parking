@@ -52,9 +52,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // TODO
         Route::get('/user/{id}', [UserController::class, 'show'])
             ->name('user.show');
-        Route::post('/user/{id}', [UserController::class, 'update'])
+        Route::put('/user/{id}', [UserController::class, 'update'])
             ->name('user.update');
-        Route::post('/user/{id}', [UserController::class, 'destroy'])
+        Route::delete('/user/{id}', [UserController::class, 'destroy'])
             ->name('user.destroy');
 
         // Reservation route

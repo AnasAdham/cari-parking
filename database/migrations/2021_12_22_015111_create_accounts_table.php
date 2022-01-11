@@ -15,6 +15,10 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('phone_number');
+            $table->string('license_plate');
+            $table->string('address');
             $table->timestamps();
         });
     }
