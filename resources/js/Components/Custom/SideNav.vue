@@ -1,6 +1,6 @@
 <template>
     <!-- sidebar -->
-    <div class="sidebar absolute top-0 bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+    <div class="sidebar absolute top-0 bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-10">
 
       <!-- logo -->
       <Link
@@ -29,7 +29,6 @@
         <div class="dropdown block mt-5 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
           <Link class="dropbtn">{{ $page.props.auth.user.name }}</Link>
           <div class="dropdown-content">
-              <Link href="/user/1">Account</Link>
               <Link :href="route('logout')" method="post" >Logout</Link>
           </div>
         </div>
@@ -65,7 +64,9 @@
         <div class="dropdown block mt-5 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
           <Link class="dropbtn">{{ $page.props.auth.user.name }}</Link>
           <div class="dropdown-content">
-              <Link href="/user/1">Account</Link>
+              <!-- <Link href="/user/1">Account</Link> -->
+              <!-- <Link href="/user/{{ $page.props.auth.user.id }} ">Account</Link> -->
+              <Link :href="`/user/${$page.props.auth.user.id}`"  >Account</Link>
               <Link :href="route('logout')" method="post" >Logout</Link>
           </div>
         </div>

@@ -55,5 +55,6 @@ class UserController extends Controller
             return Redirect::back()->with('errorMessage', 'You cannot delete other user profile');
         }
         $user->delete();
+
     }
 }

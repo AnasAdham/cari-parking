@@ -2,7 +2,7 @@
   <div class="relative min-h-screen md:flex">
 
     <!-- mobile menu bar -->
-    <div class="fixed top-0 left-0 right-0 bg-gray-800 text-gray-100 flex justify-between md:hidden">
+    <div class="fixed top-0 left-0 right-0 bg-gray-800 text-gray-100 flex justify-between md:hidden z-10">
       <!-- logo -->
       <a href="#" class="block p-4 text-white font-bold" >Cari Parking</a>
 

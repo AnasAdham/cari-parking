@@ -4,9 +4,9 @@
     <BreezeAuthenticatedLayout>
         <div class="content bg-yellow-100 p-2 space-y-3">
             <div class="container mx-auto">
-                <h1 class="mb-8 text-3xl font-bold">
-                    <Link class="text-indigo-400 hover:text-indigo-600" :href="route('dashboard.parking')" >Parking </Link>
-                </h1>
+                <div class="flex flex-col sm:flex-row font-bold text-4xl space-x-1 mb-10">
+                    <span>Reservation  </span>
+            </div>
 
                 <div v-if="$page.props.message.error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 mb-12 rounded relative" role="alert">
                     <strong class="font-bold">Oops, sorry...</strong>
