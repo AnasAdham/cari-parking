@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 
@@ -15,9 +16,11 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($payment_details)
     {
-        return Inertia::render('Payment/Index');
+        return Inertia::render('Payment/Index', [
+            'payment' => Payment::find($payment_details)
+        ]);
     }
 
     /**
@@ -38,6 +41,13 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'id' => 'required',
+            'fee' => 'required',
+            'user_id' => 'required',
+            'reservation_id' => 'required'
+        ]);
+        $user = User::find($request->user_id);
         $options = array(
             'userSecretKey' => config('toyyibpay.key'),
             'categoryCode' => config('toyyibpay.category'),
@@ -45,12 +55,12 @@ class PaymentController extends Controller
             'billDescription' => 'Fee for parking per minutes',
             'billPriceSetting' => 1,
             'billPayorInfo' => 1,
-            'billAmount' => 100,
+            'billAmount' => $request->fee * 100,
             'billReturnUrl' => route('payment.status'),
             'billCallbackUrl' => route('payment.callback'),
-            'billExternalReferenceNo' => 'Bill-1',
-            'billTo' => 'John Doe',
-            'billEmail' => 'jd@gmail.com',
+            'billExternalReferenceNo' => $request->id,
+            'billTo' => $user->name,
+            'billEmail' => $user->email,
             'billPhone' => '0194342411',
             'billSplitPayment' => 0,
             'billSplitPaymentArgs' => '',
@@ -66,8 +76,17 @@ class PaymentController extends Controller
     }
 
     function status(){
-        $response = request()->all([ 'status', 'billcode', 'order_id']);
-        return Redirect::route('payment')->with('success', 'Payment Success');
+
+        $status_id = request()->status_id;
+        $payment = Payment::find(request()->order_id);
+
+        if($status_id == 1){
+            $payment->status = "Paid";
+            $payment->save();
+            return Redirect::route('payment.show', request()->order_id)->with('success', 'Payment success!!');
+        }else if($status_id == 3){
+            return Redirect::route('payment.show', request()->order_id)->with('error', 'Payment failed');
+        }
     }
 
     /**

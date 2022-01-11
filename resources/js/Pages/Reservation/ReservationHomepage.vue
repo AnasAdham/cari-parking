@@ -16,7 +16,7 @@
                     </span>
                 </div>
 
-                <form @submit.prevent="form.post('/reservation')">
+                <form @submit.prevent="form.get('/reservation/show')">
                     <div class="grid grid-cols-2 max-w-xl bg-gray-300 rounded-md shadow overflow-hidden p-5 " >
                         <div class="m-3 col-span-2">
                             <Label class="text-2xl">Date</Label>

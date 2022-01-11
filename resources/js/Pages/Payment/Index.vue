@@ -16,6 +16,12 @@
       href="/payment/store"
       method="post"
       as="button"
+      :data="{
+          id: payment.id,
+          fee: payment.fee,
+          user_id: payment.user_id,
+          reservation_id: payment.reservation_id,
+      }"
     >Click me</Link>
   </BreezeAuthenticatedLayout>
 </template>
@@ -30,7 +36,7 @@ export default {
     BreezeAuthenticatedLayout,
     Head,
   },
-  props: ['response']
+  props: ['response', 'payment']
 };
 </script>
 

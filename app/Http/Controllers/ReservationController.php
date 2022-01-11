@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Parking;
-use App\Models\User;
+use App\Models\Payment;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -27,18 +27,14 @@ class ReservationController extends Controller
             'reservation_start' => 'required',
             'reservation_end' => 'required',
         ]);
-        // TODO
-        // If reservation start < now+1hour
         $nowPlusOneHour = Carbon::now()->addHours(1);
-
-        // Then redirect back "Reservation must be one hour or more from now"
-
-
         $parkings = Parking::all();
         // Retrieve date from interface
+        $start_carbon = Carbon::parse($request->reservation_date . " ". $request->reservation_start, 'Asia/Kuala_Lumpur');
         $start = Carbon::parse($request->reservation_start, 'Asia/Kuala_Lumpur')
             ->toTimeString();
         // Retrieve reservation start time
+        $end_carbon = Carbon::parse($request->reservation_date . " ". $request->reservation_end, 'Asia/Kuala_Lumpur');
         $end = Carbon::parse($request->reservation_end, 'Asia/Kuala_Lumpur')
             ->toTimeString();
 
@@ -70,13 +66,19 @@ class ReservationController extends Controller
             }
             $counter++;
         }
+        // Calculate amount of fee
+
+        // dd($end_carbon->diffInMinutes($start_carbon) / 60);
+        $fee = $end_carbon->diffInMinutes($start_carbon) / 60;
 
         return Inertia::render('Reservation/ChooseParkingToReserve', [
             'parkings' => $parkings,
             'reservation_data' => array(
                 "date" => $date,
                 "start" => $start,
-                "end" => $end
+                "end" => $end,
+                "fee" => $fee,
+
             )
         ]);
     }
@@ -91,7 +93,7 @@ class ReservationController extends Controller
             'reservation' => 'required'
         ]);
 
-        Reservation::create([
+        $reservation = Reservation::create([
             'reservation_user' => $request->user,
             'reservation_parking' => $request->parking,
             'reservation_date' => $request->reservation["date"],
@@ -99,7 +101,23 @@ class ReservationController extends Controller
             'reservation_end' => $request->reservation["end"],
         ]);
 
-        return redirect()->route('reservation.homepage');
+        $payment = Payment::create([
+            'user_id' => $request->user,
+            'reservation_id' => $reservation->id,
+            'fee' => $request->reservation['fee'],
+            'status' => 'Unpaid',
+        ]);
+        // return redirect()->route('payment', [
+        //     'payment' => [
+        //         'user_id' => $request->user,
+        //         'reservation_id' => $reservation->id,
+        //         'fee' => $reservation["fee"]
+        //     ]
+        // ]);
+        // return redirect()->route('payment');
+        return redirect()->route('payment', [
+            "payment" => $payment->id,
+        ]);
     }
 
 

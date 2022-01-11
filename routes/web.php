@@ -21,6 +21,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/testing', function () {
+    dd("something");
     return Inertia::render('Dashboard');
 });
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -61,7 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('/reservation')->group(function () {
             Route::get('/', [ReservationController::class, 'index'])
                 ->name('reservation.homepage');
-            Route::post('/', [ReservationController::class, 'showAllAvailableParkingToReserve'])
+            Route::get('/show', [ReservationController::class, 'showAllAvailableParkingToReserve'])
                 ->name('reservation.showAvailableParking');
             //  create
             Route::post('/create', [ReservationController::class, 'makeReservation'])
@@ -80,12 +81,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Payment route
         Route::prefix('/payment')->group(function () {
             // TODO set as view payment
-            Route::get('/', [PaymentController::class, 'index'])
+            Route::get('/index/{payment}', [PaymentController::class, 'index'])
                 ->name('payment');
             Route::post('/store', [PaymentController::class, 'store'])
                 ->name('payment.store');
+
             Route::get('/status', [PaymentController::class, 'status'])
                 ->name('payment.status');
+
             Route::post('/callback', [PaymentController::class, 'callback'])
                 ->name('payment.callback');
             Route::get('/{id}', [PaymentController::class, 'show'])
