@@ -19,7 +19,8 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $account = Account::where('user_id', $id)->first();
+        // $account = Account::where('user_id', $id)->first();
+
         if(Auth::user()->cannot('view', $user)){
             return Redirect::back()->with('errorMessage', 'You cannot view other user profile');
         }
@@ -28,9 +29,7 @@ class UserController extends Controller
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'phone_number' => $account->phone_number,
-                'license_plate' => $account->license_plate,
-                'address' => $account->address,
+                'account' => $user->account
             ]
         ]);
     }
@@ -47,12 +46,12 @@ class UserController extends Controller
         if (Auth::user()->cannot('view', $user)) {
             return Redirect::back()->with('errorMessage', 'You cannot edit other user profile');
         }
-        Account::where('user_id', $id)->update([
+        $user->account->update([
             'phone_number' => $request->phone_number,
             'license_plate' => $request->license_plate,
             'address' => $request->address
             ]);
-        User::find($id)->update([
+        $user->update([
             'name' => $request->name
         ]);
         return Redirect::back()->with('success', 'Update successful !!');
@@ -64,7 +63,7 @@ class UserController extends Controller
         if (Auth::user()->cannot('view', $user)) {
             return Redirect::back()->with('errorMessage', 'You cannot delete other user profile');
         }
-        $user->delete();
+        $user->account->delete();
 
     }
 }

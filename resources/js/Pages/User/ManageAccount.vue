@@ -100,9 +100,9 @@ export default {
     return {
       form: this.$inertia.form({
         name: this.user.name,
-        phone_number: this.user.phone_number,
-        license_plate: this.user.license_plate,
-        address: this.user.address,
+        phone_number: this.user.account.phone_number,
+        license_plate: this.user.account.license_plate,
+        address: this.user.account.address,
       }),
     }
   },
