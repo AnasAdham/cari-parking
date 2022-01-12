@@ -16,8 +16,11 @@ class Reservation extends Model
         'reservation_end'
     ];
 
-    public function parking()
-    {
+    public function parking() {
         return $this->hasOne(Parking::class, 'id', 'reservation_parking');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class, 'reservation_user', 'id');
     }
 }

@@ -34,32 +34,29 @@
         </div>
       </nav>
       <nav v-if="$page.props.auth.user.user_type === `customer`">
-        <!-- <a
-          href="#"
-          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
-        >
-          Dashboard
-        </a> -->
         <Link
           href="/parking"
           class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
-        >
-          Parking
-        </Link>
-        <div class="dropdown block mb-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+        > Parking </Link>
+        <!-- <div class="dropdown block mb-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
           <Link class="dropbtn">Reservation</Link>
           <div class="dropdown-content">
-              <Link href="/reservation/user/1">View reservation</Link>
+              <Link :href="`/reservation/user/`">View reservation</Link>
               <Link href="/reservation">Make reservation</Link>
           </div>
-        </div>
-        <div class="dropdown block mb-2 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
-          <Link class="dropbtn">Payment</Link>
-          <div class="dropdown-content">
-              <Link href="/payment">Make payment</Link>
-              <Link href="/payment/1">View payment</Link>
-          </div>
-        </div>
+        </div> -->
+        <Link
+          :href="`/reservation`"
+          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
+        >
+          Make reservation
+        </Link>
+        <Link
+          :href="`/payment/show`"
+          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
+        >
+          Reservation
+        </Link>
         <hr>
         <div class="dropdown block mt-5 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
           <Link class="dropbtn">{{ $page.props.auth.user.name }}</Link>

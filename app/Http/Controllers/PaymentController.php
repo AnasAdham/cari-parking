@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Payment;
+use App\Models\Reservation;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 
@@ -18,8 +20,9 @@ class PaymentController extends Controller
      */
     public function index($payment_details)
     {
+
         return Inertia::render('Payment/Index', [
-            'payment' => Payment::find($payment_details)
+            'payment' => Payment::with('reservation')->find($payment_details)
         ]);
     }
 
@@ -75,17 +78,17 @@ class PaymentController extends Controller
         return Inertia::location('https://dev.toyyibpay.com/' . $billCode);
     }
 
-    function status(){
+    function status(Request $request){
+        $status_id = $request->status_id;
+        $payment = Payment::find($request->order_id);
 
-        $status_id = request()->status_id;
-        $payment = Payment::find(request()->order_id);
-
-        if($status_id == 1){
+        if ($status_id == 1 || $status_id == 2) {
             $payment->status = "Paid";
             $payment->save();
-            return Redirect::route('payment.show', request()->order_id)->with('success', 'Payment success!!');
-        }else if($status_id == 3){
-            return Redirect::route('payment.show', request()->order_id)->with('error', 'Payment failed');
+            return Redirect::route('payment.showAll')->with('success', 'Payment success!!');
+
+        } else if ($status_id == 3) {
+            return Redirect::route('payment.showAll')->with('error', 'Payment failed');
         }
     }
 
@@ -98,6 +101,15 @@ class PaymentController extends Controller
     public function show($id)
     {
         return Inertia::render('Payment/Show');
+    }
+    public function showAllPayment()
+    {
+        $id = Auth::user()->id;
+        return Inertia::render('Payment/Show', [
+            'payments' => Payment::where('user_id', $id)
+                ->with('reservation')
+                ->paginate(8),
+        ]);
     }
 
     /**

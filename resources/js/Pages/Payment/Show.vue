@@ -3,7 +3,7 @@
   <BreezeAuthenticatedLayout>
    <div class="flex flex-col sm:flex-row font-bold text-4xl space-x-1">
     <span>Payment / </span>
-    <span class="text-indigo-400">anasadham</span>
+    <span class="text-indigo-400">{{ $page.props.auth.user.name }}</span>
   </div>
    <div class="bg-yellow-100 h-screen p-8 rounded-md w-full hidden md:block">
   <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -11,49 +11,39 @@
       <table class="min-w-full leading-normal">
         <thead>
           <tr>
-            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Date and time</th>
+            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Reservation Date</th>
+            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Reservation Time</th>
             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Amount</th>
             <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+            <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">View</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="payment in payments.data" :key="payment.id">
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p class="text-gray-900 whitespace-no-wrap">Parking No 1</p>
+              <p class="text-gray-900 whitespace-no-wrap">{{ payment.reservation.reservation_date}}</p>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p class="text-gray-900 whitespace-no-wrap">2pm to 4pm on 24/04/2021</p>
+              <p class="text-gray-900 whitespace-no-wrap">{{ payment.reservation.reservation_start}} until {{ payment.reservation.reservation_end}}</p>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p class="text-blue-900 whitespace-no-wrap">RM 5</p>
+              <p class="text-blue-900 whitespace-no-wrap">{{ payment.fee }}</p>
             </td>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <span class="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
-                <span aria-hidden class="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                <span class="relative">Paid</span>
+              <span :class="payment.status == `Paid` ? 'text-green-900': `text-red-900`" class="relative inline-block px-3 py-1 font-semibold leading-tight">
+                <span aria-hidden :class="payment.status == `Paid`? 'bg-green-300' : 'bg-red-300'" class="absolute inset-0  opacity-50 rounded-full"></span>
+                <span class="relative">{{ payment.status }}</span>
               </span>
             </td>
-          </tr>
-          <tr>
             <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p class="text-gray-900 whitespace-no-wrap">Parking No 1</p>
-            </td>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p class="text-gray-900 whitespace-no-wrap">2pm to 4pm on 24/04/2021</p>
-            </td>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <p class="text-blue-900 whitespace-no-wrap">RM 5</p>
-            </td>
-            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-              <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
-                <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full"></span>
-                <span class="relative">Unpaid</span>
-              </span>
+              <Link class="butang" as="button" :href="`/payment/index/${payment.id}`">Click me</Link>
             </td>
           </tr>
         </tbody>
       </table>
+    <div v-show="!payments.data" class="px-6 py-6 flex flex-col justify-items-center w-full h-32 text-blue-900 text-2xl bg-white text-center font-semibold">
+        <div>You have not perform any reservations</div>
+    </div>
     </div>
   </div>
 </div>
@@ -109,11 +99,16 @@
 <script>
 import BreezeAuthenticatedLayout from "@/Layouts/Authenticated.vue"
 import {Head} from "@inertiajs/inertia-vue3"
+import Button from "@/Components/Button.vue"
+import { Link } from "@inertiajs/inertia-vue3"
 export default {
     components: {
         BreezeAuthenticatedLayout,
-        Head
-    }
+        Head,
+        Button,
+        Link,
+    },
+    props: ["payments"]
 
 }
 </script>

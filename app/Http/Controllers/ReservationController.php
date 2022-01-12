@@ -123,13 +123,21 @@ class ReservationController extends Controller
 
 
     // Function for showing reservation specific to the user
-    public function show($id)
+    public function show()
     {
-        // $reservations = Reservation::where('user_id', $id);
-        // return Inertia::render('Reservation/UserReservation', [
-        //     'reservations' => $reservations
-        // ]);
-        return Inertia::render('Reservation/UserReservation');
+        $id = Auth::user()->id;
+        $reservations = Reservation::where('reservation_user', $id)
+                            ->with('parking')
+                            ->paginate(8);
+
+        return Inertia::render('Reservation/UserReservation', [
+            'reservations' => $reservations
+        ]);
+    }
+    public function showOneReservation($id){
+        return Inertia::render('Reservation/Show', [
+            'reservation' => Reservation::find($id)->with(['parking', 'user'])->first()
+        ]);
     }
 
     // Function for canceling reservation

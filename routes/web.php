@@ -68,8 +68,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/create', [ReservationController::class, 'makeReservation'])
                 ->name('reservation.makeReservation');
             // user/id
-            Route::get('/user/{id}', [ReservationController::class, 'show'])
+            Route::get('/user', [ReservationController::class, 'show'])
                 ->name('reservation.show');
+            Route::get('/user/{id}', [ReservationController::class, 'showOneReservation'])
+                ->name('reservation.showOne');
         });
 
         // Parking route
@@ -91,9 +93,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::post('/callback', [PaymentController::class, 'callback'])
                 ->name('payment.callback');
-            Route::get('/{id}', [PaymentController::class, 'show'])
+            Route::get('/show', [PaymentController::class, 'showAllPayment'])
+                ->name('payment.showAll');
+            Route::get('/view/payment/{id}', [PaymentController::class, 'show'])
                 ->name('payment.show');
-            Route::post('/{id}', [PaymentController::class, 'update'])
+            Route::post('/view/payment/{id}', [PaymentController::class, 'update'])
                 ->name('payment.update');
         });
     });
