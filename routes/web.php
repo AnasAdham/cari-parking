@@ -42,13 +42,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('dashboard.parking');
             Route::get('/parking/{id}', [DashboardController::class, 'showParking'])
                 ->name('dashboard.show.parking');
-            // TODO
             Route::get('/users', [DashboardController::class, 'showAllUsers'])
                 ->name('dashboard.users');
             Route::get('/users/{user}', [DashboardController::class, 'showUser'])
                 ->name('dashboard.show.user');
             Route::post('/users/{user}', [DashboardController::class, 'sendMessage'])
                 ->name('dashboard.send.message');
+            Route::get('/notification', [DashboardController::class, 'viewNotification'])
+                ->name('dashboard.notification');
+            Route::post('/notifications/clear', [DashboardController::class, 'markNotification'])
+                ->name('dashboard.notification.clear');
             // And many more if possible
         });
     }); // Administrator routes
@@ -86,6 +89,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('/parking')->group(function () {
             Route::get('/', [ParkingController::class, 'index'])
                 ->name('parking.homepage');
+            Route::post('/notify', [ParkingController::class, 'notifyAdmin'])
+                ->name('parking.notify.admin');
         });
 
         // Payment route

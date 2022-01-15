@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\NewParkingInfo;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
 use App\Models\Parking;
@@ -41,11 +42,12 @@ class UpdateReservedParking extends Command
      */
     public function handle()
     {
+        // NewParkingInfo::dispatch();
         // Get current date and time
         $date = Carbon::now()->toDateString();
         $start = Carbon::now()->toTimeString();
         $end = Carbon::now()->toTimeString();
-        echo "Checking reservation at " . $date . " between " . $start . " and " . $end . "\n";
+        // echo "Checking reservation at " . $date . " between " . $start . " and " . $end . "\n";
 
         // Get the any reservation that is reserved now
         $reservations = Reservation::whereDate('reservation_date', $date)
@@ -58,35 +60,42 @@ class UpdateReservedParking extends Command
         foreach ($parkings as $parking) {
             if ($parking->parking_status == 'reserved') {
                 $parking->parking_status = 'available';
-                $parking->save();
+                // $parking->save();
             }
-            echo $parking->id . " -> ";
-            echo $parking->parking_status;
-            echo "\n";
+            // echo $parking->id . " -> ";
+            // echo $parking->parking_status;
+            // echo "\n";
         }
 
         foreach ($reservations as $reservation) {
-            echo "Reservation " . $reservation->id . " -> ";
-            echo $reservation->parking->id;
-            echo "\n";
+            // echo "Reservation " . $reservation->id . " -> ";
+            // echo $reservation->parking->id;
+            // echo "\n";
         }
         // If the reservations is not empty or available
         if (!$reservations->isEmpty()) {
             foreach ($reservations as $reservation) {
+            echo "\n";
+                $reservedParking = Parking::find($reservation->parking->id);
+                echo $reservedParking->id;
+                echo "\n";
                 foreach ($parkings as $parking) {
-                    $parking = Parking::find($reservation->parking->id);
-                    if ($parking->parking_status = "available") {
+                    if ($parking->id == $reservedParking->id && $parking->parking_status = "available") {
                         // If parking is available then set the parking status to reserved
                         $parking->parking_status = "reserved";
                         $parking->save();
-                    } else {
+                    } else if($parking == $reservedParking && $parking->parking_status = "occupied"){
                         // TODO else then set the set the parking as wrong parking
+                        $parking->parking_status = "occupied";
                         // Send error message
                     }
+                echo $parking->id . " ----> ";
+                echo $parking->parking_status;
+                echo "\n";
                 }
             }
         }
-        echo "Parking info updated with reservation info";
+        // echo "Parking info updated with reservation info";
         return Command::SUCCESS;
     }
 }

@@ -29,12 +29,15 @@ class ReservationController extends Controller
         ]);
         $nowPlusOneHour = Carbon::now()->addHours(1);
         $parkings = Parking::all();
+
         // Retrieve date from interface
         $start_carbon = Carbon::parse($request->reservation_date . " ". $request->reservation_start, 'Asia/Kuala_Lumpur');
+
         $start = Carbon::parse($request->reservation_start, 'Asia/Kuala_Lumpur')
             ->toTimeString();
         // Retrieve reservation start time
         $end_carbon = Carbon::parse($request->reservation_date . " ". $request->reservation_end, 'Asia/Kuala_Lumpur');
+
         $end = Carbon::parse($request->reservation_end, 'Asia/Kuala_Lumpur')
             ->toTimeString();
 
@@ -93,13 +96,17 @@ class ReservationController extends Controller
             'reservation' => 'required'
         ]);
 
-        $reservation = Reservation::create([
-            'reservation_user' => $request->user,
-            'reservation_parking' => $request->parking,
-            'reservation_date' => $request->reservation["date"],
-            'reservation_start' => $request->reservation["start"],
-            'reservation_end' => $request->reservation["end"],
-        ]);
+        if(Parking::find($request->parking)->parking_status != "reserved"){
+            $reservation = Reservation::create([
+                'reservation_user' => $request->user,
+                'reservation_parking' => $request->parking,
+                'reservation_date' => $request->reservation["date"],
+                'reservation_start' => $request->reservation["start"],
+                'reservation_end' => $request->reservation["end"],
+            ]);
+        }else{
+            return Redirect::back()->with('error', 'Parking is already reserved');
+        }
 
         $payment = Payment::create([
             'user_id' => $request->user,
@@ -107,14 +114,6 @@ class ReservationController extends Controller
             'fee' => $request->reservation['fee'],
             'status' => 'Unpaid',
         ]);
-        // return redirect()->route('payment', [
-        //     'payment' => [
-        //         'user_id' => $request->user,
-        //         'reservation_id' => $reservation->id,
-        //         'fee' => $reservation["fee"]
-        //     ]
-        // ]);
-        // return redirect()->route('payment');
         return redirect()->route('payment', [
             "payment" => $payment->id,
         ]);

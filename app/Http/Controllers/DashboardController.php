@@ -10,6 +10,7 @@ use App\Models\Reservation;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Notifications\UserMessage;
+use Illuminate\Support\Facades\Auth;
 // use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
@@ -19,6 +20,34 @@ class DashboardController extends Controller
     public function index()
     {
         return Inertia::render('Dashboard/Homepage');
+    }
+
+    public function viewNotification(){
+        $user = Auth::user();
+        if($user->user_type == "customer"){
+            return Redirect::route('user.homepage')->with('error', 'You are not allowed to view this page');
+        }
+        return Inertia::render('Dashboard/Notifications', [
+            'notifications' => $user->unreadNotifications
+        ]);
+
+    }
+    public function markNotification(Request $request){
+        $request->validate([
+            "notification" => "required"
+        ]);
+        $user = Auth::user();
+        if($user->user_type == "customer"){
+            return Redirect::route('user.homepage')->with('error', 'You are not allowed to view this page');
+        }
+
+        $user->unreadNotifications
+            ->when($request->notification_id, function ($query) use ($request) {
+                return $query->where('id', $request->notification_id);
+            })
+            ->markAsRead();
+
+        return Redirect::back();
     }
 
     public function showReservation()
