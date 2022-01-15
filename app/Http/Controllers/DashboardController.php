@@ -9,6 +9,10 @@ use App\Models\Parking;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Notifications\UserMessage;
+// use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redirect;
 
 class DashboardController extends Controller
 {
@@ -24,6 +28,34 @@ class DashboardController extends Controller
         return Inertia::render('Dashboard/Homepage', [
             'parkings' => $reservations
         ]);
+    }
+    public function showAllUsers(Request $request)
+    {
+        return Inertia::render('Dashboard/AllUser', [
+            'users' => User::query()
+                ->when($request->input('search'), function ($query, $search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->where('user_type', 'customer')
+                ->paginate(8),
+        ]);
+    }
+
+    public function showUser($id)
+    {
+        $user = User::find($id);
+        return Inertia::render('Dashboard/User', [
+            'user' => $user
+        ]);
+    }
+    public function sendMessage(Request $request){
+        $request->validate([
+            'user_id' => 'required',
+            'message' => 'required'
+        ]);
+        $user = User::find($request->user_id);
+        Notification::sendNow($user, new UserMessage($request->message));
+        return Redirect::back()->with('success', 'Message successfully sent');
     }
 
     public function showAllParking(Request $request)

@@ -53,8 +53,8 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        if($request->user_type = "customer"){
-            $customer = Account::create([
+        if($request->user_type == "customer"){
+            Account::create([
                 'user_id' => $user->id,
                 'phone_number' => $request->phone_number,
                 'license_plate' => $request->license_plate,

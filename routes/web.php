@@ -29,9 +29,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('user.homepage');
 });
 
+// Authenticated route
 Route::middleware(['auth', 'verified'])->group(function () {
 
 
+    // Administrator routes
     Route::middleware('can:isAdmin, App\Models\User')->group(function () {
         // Dashboard route
         Route::prefix('/dashboard')->group(function () {
@@ -45,9 +47,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('dashboard.users');
             Route::get('/users/{user}', [DashboardController::class, 'showUser'])
                 ->name('dashboard.show.user');
+            Route::post('/users/{user}', [DashboardController::class, 'sendMessage'])
+                ->name('dashboard.send.message');
             // And many more if possible
         });
-    });
+    }); // Administrator routes
+
+    // Customer routes
     Route::middleware('can:isCustomer, App\Models\User')->group(function () {
         // User route
         // TODO
@@ -57,6 +63,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('user.update');
         Route::delete('/user/{id}', [UserController::class, 'destroy'])
             ->name('user.destroy');
+        Route::post('/user/{id}/notifications', [UserController::class, 'markNotification'])
+            ->name('user.mark.notification');
 
         // Reservation route
         Route::prefix('/reservation')->group(function () {
@@ -72,7 +80,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('reservation.show');
             Route::get('/user/{id}', [ReservationController::class, 'showOneReservation'])
                 ->name('reservation.showOne');
-        });
+        }); // Reservation Route
 
         // Parking route
         Route::prefix('/parking')->group(function () {
@@ -99,9 +107,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 ->name('payment.show');
             Route::post('/view/payment/{id}', [PaymentController::class, 'update'])
                 ->name('payment.update');
-        });
-    });
-});
+        });// Payment route
+
+    }); // Customer routes
+
+}); // Authenticated routes
 
 
 

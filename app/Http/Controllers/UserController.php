@@ -16,6 +16,18 @@ class UserController extends Controller
         return Inertia::render('User/Homepage');
     }
 
+    public function markNotification($id, Request $request)
+    {
+        $user = User::find($id)
+            ->unreadNotifications
+            ->when($request->notification_id, function ($query) use ($request) {
+                return $query->where('id', $request->notification_id);
+            })
+            ->markAsRead();
+
+        return Redirect::back();
+    }
+
     public function show($id)
     {
         $user = User::find($id);
@@ -29,7 +41,8 @@ class UserController extends Controller
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'account' => $user->account
+                'account' => $user->account,
+                'notifications' => $user->unreadNotifications
             ]
         ]);
     }
