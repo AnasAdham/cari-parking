@@ -25,6 +25,18 @@
         >
           Parking
         </Link>
+        <Link
+          href="/dashboard/notification"
+          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
+        >
+          Notifications
+        </Link>
+        <Link
+          href="/dashboard/users"
+          class="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
+        >
+          Users
+        </Link>
         <hr>
         <div class="dropdown block mt-5 py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
           <Link class="dropbtn">{{ $page.props.auth.user.name }}</Link>

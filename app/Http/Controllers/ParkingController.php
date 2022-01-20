@@ -28,31 +28,31 @@ class ParkingController extends Controller
 
     public function index()
     {
-        // Returns the parking view page with all the parking details
-        // Check all parking see whether it is reserved or not
-
-        // if parking is reserved at now then display as reserved
-        // else show parking as either occupied or available
-
-        // Get all parkings including wrong parking
         $parkings = Parking::all();
-        // Then check for reservations
 
-        // Artisan::call('reserved:update');
+        // Then check for reservations
+        Artisan::call('reserved:update');
         return Inertia::render('Parking/Index', [
             'parkings' => $parkings
         ]);
     }
 
-    public function notifyAdmin(Request $request){
+    public function notifyAdmin(Request $request)
+    {
+
         $request->validate([
             'parking' => 'required',
             'notification' => 'required'
         ]);
-        $admin = User::where('user_type', 'admin')->first();
-        $message = "Wrong parking";
-        Notification::sendNow($admin, new ReservationConfirmation($message, $request->parking));
-        Auth::user()->unreadNotifications->where('id', $request->notification["id"])->markAsRead();
+
+        try {
+            $admin = User::where('user_type', 'admin')->first();
+            $message = "Wrong parking";
+            Notification::sendNow($admin, new ReservationConfirmation($message, $request->parking));
+            Auth::user()->unreadNotifications->where('id', $request->notification["id"])->markAsRead();
+        } catch (ModelNotFoundException $exception) {
+            return Redirect::back()->with('error', $exception->getMessage());
+        }
         return Redirect::back()->with('success', 'Notification sent! We will solve this issue immediately');
     }
 
@@ -98,81 +98,31 @@ class ParkingController extends Controller
      */
     public function store(Request $request)
     {
-        $parkings = $request->all();
-        foreach ($parkings as $data) {
-            $parking = Parking::firstOrNew([
-                'id' => $data["id"]
-            ]);
-            $parking->parking_name = $data["parking_name"];
+        try {
+            $parkings = $request->all();
+            foreach ($parkings as $data) {
+                $parking = Parking::firstOrNew([
+                    'id' => $data["id"]
+                ]);
 
-            if ($parking->parking_status == "reserved") {
-                // $parking->parking_status = "wrong_parking";
-                // TODO Notify the user
-                $message = "We detected a car parked at the parking that you have reserved";
-                Notification::sendNow(Reservation::where('reservation_parking', $parking->id)->first()->user, new ReservationConfirmation($message, $parking));
+                if ($parking->parking_status == "reserved") {
+                    $message = "We detected a car parked at the parking that you have reserved";
+                    Notification::sendNow(Reservation::where('reservation_parking', $parking->id)->first()->user, new ReservationConfirmation($message, $parking));
+                }
+
+                $parking->parking_name = $data["parking_name"];
+                $parking->parking_status = $data["parking_status"];
+                $parking->save();
             }
-
-            $parking->parking_status = $data["parking_status"];
-            $parking->save();
+        } catch (ModelNotFoundException $exception) {
+            return Response::json(array(
+                'code'      =>  401,
+                'message'   =>  $exception->getMessage()
+            ), 401);
         }
-        $parkings = Parking::all();
 
+        $parkings = Parking::all();
         NewParkingInfo::dispatch();
         return ParkingResource::collection($parkings);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -60,7 +60,7 @@ class UpdateReservedParking extends Command
         foreach ($parkings as $parking) {
             if ($parking->parking_status == 'reserved') {
                 $parking->parking_status = 'available';
-                // $parking->save();
+                $parking->save();
             }
             // echo $parking->id . " -> ";
             // echo $parking->parking_status;
@@ -75,23 +75,23 @@ class UpdateReservedParking extends Command
         // If the reservations is not empty or available
         if (!$reservations->isEmpty()) {
             foreach ($reservations as $reservation) {
-            echo "\n";
+            // echo "\n";
                 $reservedParking = Parking::find($reservation->parking->id);
-                echo $reservedParking->id;
-                echo "\n";
+                // echo $reservedParking->id;
+                // echo "\n";
                 foreach ($parkings as $parking) {
-                    if ($parking->id == $reservedParking->id && $parking->parking_status = "available") {
+                    if ($parking->id == $reservedParking->id && $parking->parking_status == "available") {
                         // If parking is available then set the parking status to reserved
                         $parking->parking_status = "reserved";
                         $parking->save();
-                    } else if($parking == $reservedParking && $parking->parking_status = "occupied"){
+                    } else if($parking == $reservedParking && $parking->parking_status == "occupied"){
                         // TODO else then set the set the parking as wrong parking
                         $parking->parking_status = "occupied";
                         // Send error message
                     }
-                echo $parking->id . " ----> ";
-                echo $parking->parking_status;
-                echo "\n";
+                // echo $parking->id . " ----> ";
+                // echo $parking->parking_status;
+                // echo "\n";
                 }
             }
         }
